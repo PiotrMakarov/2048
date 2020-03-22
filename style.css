@@ -1,10 +1,10 @@
 :root {
-	--size: 70px;
-	--radius: 7px;
-	--spacing: 7px;
+	--size: 450px;
+	--radius: 5px;
+	--spacing: 14px;
 }
 
-body, .block {
+body, .block, .message {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -15,22 +15,33 @@ body {
 	height: 100vh;
 
 	font-family: roboto;
+	font-size: 30px;
 }
 
 .container {
 	position: relative;
+	width: var(--size);
+	height: var(--size);
 }
 
 .container > * {
 	position: absolute;
+	padding: var(--spacing);
+	width: inherit;
+	height: inherit;
+}
+
+.message {
+	background: #fffa;
+	font-weight: bold;
+	font-size: 60px;
 }
 
 .field {
 	display: grid;
-	grid-template-rows: repeat(var(--height), var(--size));
-	grid-template-columns: repeat(var(--width), var(--size));
+	grid-template-rows: repeat(var(--height), 1fr);
+	grid-template-columns: repeat(var(--width), 1fr);
 	grid-gap: var(--spacing);
-	padding: var(--spacing);
 }
 
 .bg {
