@@ -55,12 +55,6 @@ class FieldBase {
 		return container;
 	}
 
-	sendMessage(text, timeout) {
-		this.message.innerText = text;
-		this.message.classList.remove('hidden');
-		if (timeout) setTimeout(() => this.message.classList.add('hidden'));
-	}
-
 	render() {
 		this.elem = this.makeContainer();
 

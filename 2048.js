@@ -11,14 +11,11 @@ function resizeContainer(container) {
 }
 
 
-let field = new Field(4, 4);
+let field = new Field(3,3);
 let elem = field.render();
 
-field.add(0, 0, '2');
-field.add(2, 0, '2');
-
-let a = field.get(0, 0);
-let b = field.get(2, 0);
+field.addRandomBlock();
+field.addRandomBlock();
 
 document.body.append(elem);
 

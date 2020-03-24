@@ -1,3 +1,18 @@
+function powToShade(pow) {
+	let percents = 100 / 11 * pow;
+	if (percents > 100) percents = 100;
+	return percents;
+}
+
+function textToColor(text) {
+	let n = Number(text);
+	let pow = Math.log2(n);
+	return {
+		bg: `hsl(0, 0%, ${powToShade(pow)}%)`,
+		fg: n < 128 ? 'white' : 'black',
+	};
+}
+
 class FieldOperate extends FieldBase {
 	constructor(...args) {
 		super(...args);
@@ -15,9 +30,15 @@ class FieldOperate extends FieldBase {
 			.every(x => x == true);
 	}
 
-	add(x, y, text) {
+	add(x, y, text, merge = false) {
 		let block = createDivClass('block');
 		block.innerText = text;
+
+		let {bg, fg} = textToColor(text);
+		block.style.background = bg;
+		block.style.color = fg;
+
+		if (merge) block.classList.add('merge');
 
 		this.field.append(block);
 		this.blocks[x][y] = block;
@@ -75,4 +96,5 @@ class FieldOperate extends FieldBase {
 		this.blocks[old[0]][old[1]] = null;
 		this.blocks[x][y] = block;
 	}
+
 }

@@ -24,7 +24,7 @@ class Field extends FieldOperate {
 		this.move(a, ...coord);
 
 		this.delete(a);
-		let c = this.add(coord[0], coord[1], sum);
+		let c = this.add(coord[0], coord[1], sum, true);
 
 		let timeout = parseFloat(
 			getComputedStyle(document.documentElement)
@@ -74,10 +74,18 @@ class Field extends FieldOperate {
 		return true;
 	}
 
+	sendMessage(text, timeout) {
+		this.message.innerText = text;
+		this.message.classList.remove('hidden');
+		if (timeout) setTimeout(() => this.hideMessage(), timeout);
+	}
+
+	hideMessage() {
+		this.message.classList.add('hidden');
+	}
+
 	lose() {
-		if (this.lost) return;
 		this.sendMessage('Game over');
-		this.lost = true;
 	}
 
 	getGoSideCoords(direction) {

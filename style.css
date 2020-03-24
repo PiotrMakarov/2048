@@ -3,8 +3,8 @@
 	--radius: 5px;
 	--spacing: 14px;
 
-	--timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-	--transition: .1s;
+	--timing-function: ease;
+	--transition: .2s;
 }
 
 body, .block, .message {
@@ -80,8 +80,28 @@ body {
 	}
 }
 
+@keyframes blockMergeAnimation {
+	0% {
+		opacity: 0;
+		transform: scaleX(0) scaleY(0);
+	}
+
+	50% {
+		opacity: 1;
+		transform: scaleX(1.1) scaleY(1.1);
+	}
+
+	100% {
+		transform: scaleX(1) scaleY(1);
+	}
+}
+
 .field:not(.bg) .block {
 	animation: var(--transition) var(--timing-function) 0s 1 blockAppearAnimation;
+}
+
+.field:not(.bg) .block.merge {
+	animation: var(--transition) var(--timing-function) 0s 1 blockMergeAnimation;
 }
 
 a {
