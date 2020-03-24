@@ -15,25 +15,24 @@ class Field extends FieldOperate {
 		this.lost = false;
 	}
 
-	moveDelta(block, dx, dy) {
-		let coord = zipSum(this.getBlockCoord(block), [dx, dy]);
-		this.move(block, ...coord);
-	}
-
 	merge(a, b) {
-		if (a.innerText != b.innerText) return;
+		if (a.innerText != b.innerText) return null;
 
 		let coord = this.getBlockCoord(b);
 		let sum = _.sum([a, b].map(x => Number(x.innerText)));
-		this.move(a, coord);
-		this.delete(a);
-		this.delete(b);
-		this.add(coord, sum);
-	}
 
-	moveOrMerge(block, x, y) {
-		if (this.has(x, y)) this.merge(block, this.get(x, y));
-		else this.move(block, x, y);
+		this.move(a, ...coord);
+
+		this.delete(a);
+		let c = this.add(coord[0], coord[1], sum);
+
+		let timeout = parseFloat(
+			getComputedStyle(document.documentElement)
+			.getPropertyValue('--transition')) * 1000;
+
+		setTimeout(() => this.delete(b, false), timeout);
+
+		return c;
 	}
 
 	getObstacleCoord(block, dx, dy) {
@@ -52,8 +51,15 @@ class Field extends FieldOperate {
 
 	moveUntilMerge(block, dx, dy) {
 		let coord = this.getObstacleCoord(block, dx, dy);
-		if (this.has(...coord)) this.merge(block, this.get(...coord));
-		else this.move(block, ...zipSum(coord, [dx, dy].map(x => x * -1)));
+		let preCoord = zipSum(coord, [dx, dy].map(x => x * -1));
+
+		let merged = false;
+		let moved = !_.isEqual(this.getBlockCoord(block), preCoord);
+
+		if (this.has(...coord)) merged = this.merge(block, this.get(...coord)) != null;
+		if (!merged) this.move(block, ...preCoord);
+
+		return merged || moved;
 	}
 
 	addRandomBlock() {
@@ -61,7 +67,7 @@ class Field extends FieldOperate {
 		if (free.length == 0) return false;
 
 		let coord = free[_.random(0, free.length-1)];
-		let digit = _.random(1, 4) == 4 ? '4' : '2';
+		let digit = _.random(1, 10) == 1 ? '4' : '2';
 
 		this.add(...coord, digit);
 
@@ -74,8 +80,44 @@ class Field extends FieldOperate {
 		this.lost = true;
 	}
 
+	getGoSideCoords(direction) {
+		let ret = [];
+
+		let delta = directionToDelta[direction];
+		let variableIndex = delta.indexOf(0);
+		let constantIndex = Number(!Boolean(variableIndex));
+		let limit = [this.width, this.height][delta.indexOf(0)];
+
+		for (let i = 0; i < limit; i++) {
+
+			let push = new Array(2);
+			push[variableIndex] = i;
+			push[constantIndex] = (limit-1) * (delta[constantIndex] > 0);
+
+			ret.push( push );
+		}
+
+		return ret;
+	}
+
 	go(direction) {
-		let successful = this.addRandomBlock();
-		if (!successful) this.lose();
+		let delta = directionToDelta[direction];
+		let changed = false;
+
+		for (let startCoord of this.getGoSideCoords(direction)) {
+			for (let blockCoord = startCoord; this.isValidCoord(...blockCoord);
+				blockCoord = zipSum(blockCoord, delta.map(x => x * -1))) {
+
+				if (!this.has(...blockCoord)) continue;
+				let block = this.get(...blockCoord);
+				let ret = this.moveUntilMerge(block, ...delta);
+				changed = changed || ret;
+			}
+		}
+
+		if (changed) {
+			let successful = this.addRandomBlock();
+			if (!successful) this.lose();
+		}
 	}
 }

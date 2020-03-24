@@ -18,6 +18,7 @@ field.add(0, 0, '2');
 field.add(2, 0, '2');
 
 let a = field.get(0, 0);
+let b = field.get(2, 0);
 
 document.body.append(elem);
 

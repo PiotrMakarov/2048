@@ -33,28 +33,37 @@ class FieldBase {
 		return field;
 	}
 
+	makeMessage() {
+		let message = createDivClass('message', 'hidden');
+		return message;
+	}
+
 	makeContainer(width, height) {
 		let container = createDivClass('container');
 
 		let bgField = this.makeBGField(this.width, this.height);
 		let field = this.makeField(this.width, this.height);
+		let message = this.makeMessage();
+
 		this.field = field;
+		this.message = message;
 
 		container.append(bgField);
 		container.append(field);
+		container.append(message);
 
 		return container;
 	}
 
 	sendMessage(text, timeout) {
 		this.message.innerText = text;
-		this.elem.append(this.message);
-		if (timeout) setTimeout(() => this.message.remove());
+		this.message.classList.remove('hidden');
+		if (timeout) setTimeout(() => this.message.classList.add('hidden'));
 	}
 
 	render() {
 		this.elem = this.makeContainer();
-		this.message = createDivClass('message');
+
 		return this.elem;
 	}
 }

@@ -2,12 +2,16 @@
 	--size: 450px;
 	--radius: 5px;
 	--spacing: 14px;
+
+	--timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+	--transition: .1s;
 }
 
 body, .block, .message {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: row;
 }
 
 body {
@@ -35,6 +39,11 @@ body {
 	background: #fffa;
 	font-weight: bold;
 	font-size: 60px;
+	transition: .3s;
+}
+
+.message.hidden {
+	opacity: 0;
 }
 
 .field {
@@ -57,4 +66,30 @@ body {
 	border-radius: var(--radius);
 	background: #e72828;
 	user-select: none;
+}
+
+@keyframes blockAppearAnimation {
+	0% {
+		opacity: 0;
+		transform: scaleX(0) scaleY(0);
+	}
+
+	100% {
+		opacity: 1;
+		transform: scaleX(1) scaleY(1);
+	}
+}
+
+.field:not(.bg) .block {
+	animation: var(--transition) var(--timing-function) 0s 1 blockAppearAnimation;
+}
+
+a {
+	text-decoration: none;
+	color: #aaa;
+	cursor: pointer;
+}
+
+a:hover {
+	color: #bbb;
 }

@@ -8,7 +8,6 @@ class FieldOperate extends FieldBase {
 				this.blocks[i].push(null);
 			}
 		}
-		console.log(this.blocks)
 	}
 
 	isValidCoord(x, y) {
@@ -28,10 +27,12 @@ class FieldOperate extends FieldBase {
 		return block;
 	}
 
-	delete(block) {
+	delete(block, deleteFromBlocks = false) {
+		block.remove();
+		if (!deleteFromBlocks) return;
+
 		let coord = this.getBlockCoord(block);
 		this.blocks[coord[0]][coord[1]] = null;
-		block.remove();
 	}
 
 	get(x, y) {
@@ -39,7 +40,11 @@ class FieldOperate extends FieldBase {
 	}
 
 	has(x, y) {
-		return this.get(x, y) != null;
+		return this.isValidCoord(x, y) && this.get(x, y) != null;
+	}
+
+	hasBlock(block) {
+		return this.getBlockCoord(block) != null;
 	}
 
 	get freeCoords() {
@@ -60,6 +65,8 @@ class FieldOperate extends FieldBase {
 				if (this.blocks[i][j] == block) return [i, j];
 			}
 		}
+
+		return null;
 	}
 
 	move(block, x, y) {
