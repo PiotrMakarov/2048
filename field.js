@@ -84,6 +84,38 @@ class Field extends FieldOperate {
 		this.message.classList.add('hidden');
 	}
 
+	isMergeable(x, y) {
+		let text;
+		if (this.has(x, y)) text = this.getCoordText(x, y);
+		else return false;
+
+		let ret = false;
+		for (let dx = -1; dx <= 1; dx++) {
+			for (let dy = -1; dy <= 1; dy++) {
+				if (!( [dx, dy].includes(0) && !_.isEqual([dx, dy], [0, 0]) )) continue;
+
+				let [nx, ny] = [x + dx, y + dy];
+				if (!this.has(nx, ny)) continue;
+				ret = ret || text == this.getCoordText(nx, ny);
+			}
+		}
+
+		return ret;
+	}
+
+	check() {
+		let ret = false;
+
+		for (let i = 0; i < this.width; i++) {
+			for (let j = 0; j < this.height; j++) {
+				if (this.blocks[i][j] == null) continue;
+				ret = ret || this.isMergeable(i, j);
+			}
+		}
+
+		return ret || this.freeCoords.length != 0;
+	}
+
 	lose() {
 		this.sendMessage('Game over');
 	}
@@ -124,8 +156,8 @@ class Field extends FieldOperate {
 		}
 
 		if (changed) {
-			let successful = this.addRandomBlock();
-			if (!successful) this.lose();
+			this.addRandomBlock();
+			if (!this.check()) this.lose();
 		}
 	}
 }

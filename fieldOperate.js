@@ -48,7 +48,7 @@ class FieldOperate extends FieldBase {
 		return block;
 	}
 
-	delete(block, deleteFromBlocks = false) {
+	delete(block, deleteFromBlocks = true) {
 		block.remove();
 		if (!deleteFromBlocks) return;
 
@@ -68,6 +68,24 @@ class FieldOperate extends FieldBase {
 		return this.getBlockCoord(block) != null;
 	}
 
+	getBlockCoord(block) {
+		for (let i = 0; i < this.width; i++) {
+			for (let j = 0; j < this.height; j++) {
+				if (this.blocks[i][j] == block) return [i, j];
+			}
+		}
+
+		return null;
+	}
+
+	getBlockText(block) {
+		return block.innerText;
+	}
+
+	getCoordText(x, y) {
+		return this.getBlockText(this.get(x, y));
+	}
+
 	get freeCoords() {
 		let ret = [];
 
@@ -78,16 +96,6 @@ class FieldOperate extends FieldBase {
 		}
 
 		return ret;
-	}
-
-	getBlockCoord(block) {
-		for (let i = 0; i < this.width; i++) {
-			for (let j = 0; j < this.height; j++) {
-				if (this.blocks[i][j] == block) return [i, j];
-			}
-		}
-
-		return null;
 	}
 
 	move(block, x, y) {
