@@ -1,3 +1,5 @@
+'use strict';
+
 function createDivClass(...classNames){
 	let elem = document.createElement('div');
 	elem.classList.add(...classNames);

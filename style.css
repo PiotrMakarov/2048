@@ -1,7 +1,7 @@
 :root {
-	--size: 450px;
+	--size: 100px;
 	--radius: 5px;
-	--spacing: 14px;
+	--spacing: calc(var(--size) * .13);
 
 	--timing-function: ease;
 	--transition: .2s;
@@ -24,8 +24,8 @@ body {
 
 .container {
 	position: relative;
-	width: var(--size);
-	height: var(--size);
+	width: calc(var(--size) * var(--width) + var(--spacing) * (var(--width) - 1));
+	height: calc(var(--size) * var(--height) + var(--spacing) * (var(--height) - 1));
 }
 
 .container > * {

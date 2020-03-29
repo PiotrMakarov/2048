@@ -1,3 +1,5 @@
+'use strict';
+
 function powToShade(pow) {
 	let percents = 100 / 11 * pow;
 	if (percents > 100) percents = 100;

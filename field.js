@@ -1,3 +1,5 @@
+'use strict';
+
 function zipSum(arr1, arr2) {
 	return _.zipWith(arr1, arr2, _.add);
 }
@@ -124,17 +126,22 @@ class Field extends FieldOperate {
 		let ret = [];
 
 		let delta = directionToDelta[direction];
-		let variableIndex = delta.indexOf(0);
-		let constantIndex = Number(!Boolean(variableIndex));
-		let limit = [this.width, this.height][delta.indexOf(0)];
 
-		for (let i = 0; i < limit; i++) {
+		let iIndex = delta.indexOf(0);
+		let maxIndex = Number(!Boolean(iIndex));
 
-			let push = new Array(2);
-			push[variableIndex] = i;
-			push[constantIndex] = (limit-1) * (delta[constantIndex] > 0);
+		let max = [this.width, this.height][iIndex];
+		let retMax = delta[maxIndex] == 1
+			? [this.width, this.height][maxIndex]-1
+			: 0;
 
-			ret.push( push );
+		for (let i = 0; i < max; i++) {
+			let newCoord = new Array(2);
+
+			newCoord[iIndex] = i;
+			newCoord[maxIndex] = retMax;
+
+			ret.push(newCoord);
 		}
 
 		return ret;
