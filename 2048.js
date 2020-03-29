@@ -1,6 +1,6 @@
 'use strict';
 
-let field = new Field(2,4);
+let field = new Field(4,4);
 let elem = field.render();
 
 field.addRandomBlock();

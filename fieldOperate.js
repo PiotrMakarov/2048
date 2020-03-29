@@ -1,20 +1,5 @@
 'use strict';
 
-function powToShade(pow) {
-	let percents = 100 / 11 * pow;
-	if (percents > 100) percents = 100;
-	return percents;
-}
-
-function textToColor(text) {
-	let n = Number(text);
-	let pow = Math.log2(n);
-	return {
-		bg: `hsl(0, 0%, ${powToShade(pow)}%)`,
-		fg: n < 128 ? 'white' : 'black',
-	};
-}
-
 class FieldOperate extends FieldBase {
 	constructor(...args) {
 		super(...args);
@@ -32,11 +17,28 @@ class FieldOperate extends FieldBase {
 			.every(x => x == true);
 	}
 
+	powToShade(pow) {
+		let percents = 100 / (this.winPower - this.startPower) * (pow - this.startPower);
+		if (percents < 0) percents = 0;
+		if (percents > 100) percents = 100;
+		return percents;
+	}
+
+	textToColor(text) {
+		let n = Number(text);
+		let pow = Math.log2(n);
+		let shade = this.powToShade(pow);
+		return {
+			bg: `hsl(0, 0%, ${shade}%)`,
+			fg: shade < 60 ? 'white' : 'black',
+		};
+	}
+
 	add(x, y, text, merge = false) {
 		let block = createDivClass('block');
 		block.innerText = text;
 
-		let {bg, fg} = textToColor(text);
+		let {bg, fg} = this.textToColor(text);
 		block.style.background = bg;
 		block.style.color = fg;
 
@@ -106,5 +108,4 @@ class FieldOperate extends FieldBase {
 		this.blocks[old[0]][old[1]] = null;
 		this.blocks[x][y] = block;
 	}
-
 }

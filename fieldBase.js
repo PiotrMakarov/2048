@@ -7,9 +7,12 @@ function createDivClass(...classNames){
 }
 
 class FieldBase {
-	constructor(width, height) {
+	constructor(width, height, startPower = 1, winPower = 11) {
 		this.width = width;
 		this.height = height;
+
+		this.startPower = startPower;
+		this.winPower = winPower;
 	}
 
 

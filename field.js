@@ -34,6 +34,10 @@ class Field extends FieldOperate {
 
 		setTimeout(() => this.delete(b, false), timeout);
 
+		if (Math.log2(sum) == this.winPower) {
+			this.win()
+		}
+
 		return c;
 	}
 
@@ -69,7 +73,9 @@ class Field extends FieldOperate {
 		if (free.length == 0) return false;
 
 		let coord = free[_.random(0, free.length-1)];
-		let digit = _.random(1, 10) == 1 ? '4' : '2';
+		let power = this.startPower;
+		if (_.random(1, 10) == 1) power++;
+		let digit = 2 ** power;
 
 		this.add(...coord, digit);
 
@@ -120,6 +126,10 @@ class Field extends FieldOperate {
 
 	lose() {
 		this.sendMessage('Game over');
+	}
+
+	win() {
+		this.sendMessage('You win!');
 	}
 
 	getGoSideCoords(direction) {
