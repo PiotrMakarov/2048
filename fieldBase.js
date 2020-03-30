@@ -11,6 +11,9 @@ class FieldBase {
 		this.width = width;
 		this.height = height;
 
+		this.size = parseFloat(getRootCssVar('size'));
+		this.spacing = parseFloat(getRootCssVar('spacing'));
+
 		this.startPower = startPower;
 		this.winPower = winPower;
 	}
@@ -19,10 +22,8 @@ class FieldBase {
 	makeBGField() {
 		let field = createDivClass('field', 'bg');
 
-		let s = document.documentElement.style;
-		s.setProperty('--width', this.width);
-		s.setProperty('--height', this.height);
-
+		setRootCssVar('width', this.width);
+		setRootCssVar('height', this.height);
 
 		for (let i = 0; i < this.width * this.height; i++) {
 			let block = createDivClass('block');

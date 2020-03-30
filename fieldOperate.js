@@ -47,7 +47,7 @@ class FieldOperate extends FieldBase {
 		this.field.append(block);
 		this.blocks[x][y] = block;
 
-		this.moveNoEffects(block, x, y);
+		this.move(block, x, y);
 
 		return block;
 	}
@@ -102,14 +102,21 @@ class FieldOperate extends FieldBase {
 		return ret;
 	}
 
-	moveNoEffects(block, x, y) {
-		let old = this.getBlockCoord(block);
-		block.style['grid-area'] = [y, x].map(x => x + 1).join(' / ');
-		this.blocks[old[0]][old[1]] = null;
-		this.blocks[x][y] = block;
+	getCoordPixels(x, y) {
+		return [x, y].map(coord => coord * this.size + (coord + 1) * this.spacing);
 	}
 
 	move(block, x, y) {
-		this.moveNoEffects(block, x, y);
+		let old = this.getBlockCoord(block);
+		this.blocks[old[0]][old[1]] = null;
+
+		let startCoord = this.getCoordPixels(x, y);
+		let endCoord = startCoord.map(x => x + this.size);
+		endCoord = zipSum(this.getCoordPixels(this.width, this.height), endCoord.map(x => x * -1));
+
+		[block.style.left, block.style.top] = startCoord.map(x => x + 'px');
+		[block.style.right, block.style.bottom] = endCoord.map(x => x + 'px');
+
+		this.blocks[x][y] = block;
 	}
 }

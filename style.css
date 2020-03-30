@@ -1,10 +1,11 @@
 :root {
 	--size: 100px;
 	--radius: 5px;
-	--spacing: calc(var(--size) * .13);
+	--spacing: 13px;
 
 	--timing-function: ease;
 	--transition: .2s;
+	--transition-move: .1s;
 }
 
 body, .block, .message {
@@ -46,7 +47,7 @@ body {
 	opacity: 0;
 }
 
-.field {
+.field.bg {
 	display: grid;
 	grid-template-rows: repeat(var(--height), 1fr);
 	grid-template-columns: repeat(var(--width), 1fr);
@@ -63,6 +64,8 @@ body {
 }
 
 .block {
+	width: var(--width);
+	height: var(--height);
 	border-radius: var(--radius);
 	background: #e72828;
 	user-select: none;
@@ -97,6 +100,8 @@ body {
 }
 
 .field:not(.bg) .block {
+	position: absolute;
+	transition: var(--transition-move);
 	animation: var(--transition) var(--timing-function) 0s 1 block-appear-animation;
 }
 
