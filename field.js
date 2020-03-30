@@ -1,9 +1,5 @@
 'use strict';
 
-function zipSum(arr1, arr2) {
-	return _.zipWith(arr1, arr2, _.add);
-}
-
 let directionToDelta = {
 	up:    [0, -1],
 	down:  [0,  1],

@@ -47,7 +47,7 @@ class FieldOperate extends FieldBase {
 		this.field.append(block);
 		this.blocks[x][y] = block;
 
-		this.move(block, x, y);
+		this.moveNoEffects(block, x, y);
 
 		return block;
 	}
@@ -102,10 +102,14 @@ class FieldOperate extends FieldBase {
 		return ret;
 	}
 
-	move(block, x, y) {
+	moveNoEffects(block, x, y) {
 		let old = this.getBlockCoord(block);
 		block.style['grid-area'] = [y, x].map(x => x + 1).join(' / ');
 		this.blocks[old[0]][old[1]] = null;
 		this.blocks[x][y] = block;
+	}
+
+	move(block, x, y) {
+		this.moveNoEffects(block, x, y);
 	}
 }

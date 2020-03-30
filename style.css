@@ -68,7 +68,7 @@ body {
 	user-select: none;
 }
 
-@keyframes blockAppearAnimation {
+@keyframes block-appear-animation {
 	0% {
 		opacity: 0;
 		transform: scaleX(0) scaleY(0);
@@ -80,7 +80,7 @@ body {
 	}
 }
 
-@keyframes blockMergeAnimation {
+@keyframes block-merge-animation {
 	0% {
 		opacity: 0;
 		transform: scaleX(0) scaleY(0);
@@ -97,11 +97,11 @@ body {
 }
 
 .field:not(.bg) .block {
-	animation: var(--transition) var(--timing-function) 0s 1 blockAppearAnimation;
+	animation: var(--transition) var(--timing-function) 0s 1 block-appear-animation;
 }
 
 .field:not(.bg) .block.merge {
-	animation: var(--transition) var(--timing-function) 0s 1 blockMergeAnimation;
+	animation: var(--transition) var(--timing-function) 0s 1 block-merge-animation;
 }
 
 a {
