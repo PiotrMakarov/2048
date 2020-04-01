@@ -1,12 +1,5 @@
 'use strict';
 
-let directionToDelta = {
-	up:    [0, -1],
-	down:  [0,  1],
-	left:  [-1, 0],
-	right: [1,  0],
-}
-
 class Field extends FieldOperate {
 	constructor(...args) {
 		super(...args);
@@ -40,7 +33,7 @@ class Field extends FieldOperate {
 	getObstacleCoord(block, dx, dy) {
 		let lastCoord = this.getBlockCoord(block);
 		while (true) {
-			let newCoord = zipSum(lastCoord, [dx, dy]);
+			let newCoord = _.zipWith(lastCoord, [dx, dy], _.add);
 
 			if (
 				!this.isValidCoord(...newCoord) ||
@@ -53,7 +46,7 @@ class Field extends FieldOperate {
 
 	moveUntilMerge(block, dx, dy) {
 		let coord = this.getObstacleCoord(block, dx, dy);
-		let preCoord = zipSum(coord, [dx, dy].map(x => x * -1));
+		let preCoord = _.zipWith(coord, [dx, dy], _.subtract);
 
 		let merged = false;
 		let moved = !_.isEqual(this.getBlockCoord(block), preCoord);
@@ -159,7 +152,7 @@ class Field extends FieldOperate {
 
 		for (let startCoord of this.getGoSideCoords(direction)) {
 			for (let blockCoord = startCoord; this.isValidCoord(...blockCoord);
-				blockCoord = zipSum(blockCoord, delta.map(x => x * -1))) {
+				blockCoord = _.zipWith(blockCoord, delta, _.subtract)) {
 
 				if (!this.has(...blockCoord)) continue;
 				let block = this.get(...blockCoord);

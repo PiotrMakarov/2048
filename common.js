@@ -1,5 +1,35 @@
-function zipSum(arr1, arr2) {
-	return _.zipWith(arr1, arr2, _.add);
+let directionToDelta = {
+	up:    [0, -1],
+	down:  [0,  1],
+	left:  [-1, 0],
+	right: [1,  0],
+}
+
+let deltaToDirectionArr = [];
+for (let direction in directionToDelta) {
+	let pair = [directionToDelta[direction], direction];
+	deltaToDirectionArr.push(pair);
+}
+
+function signDeltaToDirection(dx, dy) {
+	for (let pair of deltaToDirectionArr) {
+		let [delta, direction] = pair;
+		if (_.isEqual(delta, [dx, dy])) return direction;
+	}
+	return null;
+}
+
+function deltaToDirection(dx, dy) {
+	let delta = [dx, dy];
+	delta[delta.indexOf(_.minBy(delta, Math.abs))] = 0;
+	delta = delta.map(Math.sign);
+
+	for (let direction in directionToDelta) {
+		if (_.isEqual(directionToDelta[direction], delta))
+			return direction;
+	}
+
+	return null;
 }
 
 function getRootCssVar(name) {

@@ -112,7 +112,7 @@ class FieldOperate extends FieldBase {
 
 		let startCoord = this.getCoordPixels(x, y);
 		let endCoord = startCoord.map(x => x + this.size);
-		endCoord = zipSum(this.getCoordPixels(this.width, this.height), endCoord.map(x => x * -1));
+		endCoord = _.zipWith(this.getCoordPixels(this.width, this.height), endCoord, _.subtract);
 
 		[block.style.left, block.style.top] = startCoord.map(x => x + 'px');
 		[block.style.right, block.style.bottom] = endCoord.map(x => x + 'px');

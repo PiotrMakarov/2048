@@ -6,6 +6,9 @@
 	--timing-function: ease;
 	--transition: .2s;
 	--transition-move: .1s;
+
+	--container-width: calc(var(--size) * var(--width) + var(--spacing) * (var(--width) - 1));
+	--container-height: calc(var(--size) * var(--height) + var(--spacing) * (var(--height) - 1));
 }
 
 body, .block, .message {
@@ -25,15 +28,15 @@ body {
 
 .container {
 	position: relative;
-	width: calc(var(--size) * var(--width) + var(--spacing) * (var(--width) - 1));
-	height: calc(var(--size) * var(--height) + var(--spacing) * (var(--height) - 1));
+	width: calc(var(--container-width) + var(--spacing) * 2);
+	height: calc(var(--container-height) + var(--spacing) * 2);
 }
 
 .container > * {
 	position: absolute;
 	padding: var(--spacing);
-	width: inherit;
-	height: inherit;
+	width: var(--container-width);
+	height: var(--container-height);
 }
 
 .message {
