@@ -3,6 +3,8 @@
 class Field extends FieldOperate {
 	constructor(...args) {
 		super(...args);
+
+		this.new = [];
 		this.lost = false;
 	}
 
@@ -14,14 +16,10 @@ class Field extends FieldOperate {
 
 		this.move(a, ...coord);
 
-		this.delete(a);
+		setTimeout(() => this.delete(a, false), this.timeoutMove);
 		let c = this.add(coord[0], coord[1], sum, true);
 
-		let timeout = parseFloat(
-			getComputedStyle(document.documentElement)
-			.getPropertyValue('--transition')) * 1000;
-
-		setTimeout(() => this.delete(b, false), timeout);
+		setTimeout(() => this.delete(b, false), this.timeout);
 
 		if (Math.log2(sum) == this.winPower) {
 			this.win()
@@ -51,7 +49,11 @@ class Field extends FieldOperate {
 		let merged = false;
 		let moved = !_.isEqual(this.getBlockCoord(block), preCoord);
 
-		if (this.has(...coord)) merged = this.merge(block, this.get(...coord)) != null;
+		if (this.has(...coord)) {
+			let mergeBlock = this.get(...coord);
+			if (!this.new.includes(mergeBlock))
+				merged = this.merge(block, mergeBlock);
+		}
 		if (!merged) this.move(block, ...preCoord);
 
 		return merged || moved;
@@ -156,10 +158,15 @@ class Field extends FieldOperate {
 
 				if (!this.has(...blockCoord)) continue;
 				let block = this.get(...blockCoord);
+
 				let ret = this.moveUntilMerge(block, ...delta);
+
+				this.new.push(ret);
 				changed = changed || ret;
 			}
 		}
+
+		this.new = [];
 
 		if (changed) {
 			this.addRandomBlock();

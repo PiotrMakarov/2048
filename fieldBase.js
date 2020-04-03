@@ -13,6 +13,8 @@ class FieldBase {
 
 		this.size = parseFloat(getRootCssVar('size'));
 		this.spacing = parseFloat(getRootCssVar('spacing'));
+		this.timeout = parseFloat(getRootCssVar('transition')) * 1000;
+		this.timeoutMove = parseFloat(getRootCssVar('transition-move')) * 1000
 
 		this.startPower = startPower;
 		this.winPower = winPower;
