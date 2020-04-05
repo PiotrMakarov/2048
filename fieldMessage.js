@@ -26,7 +26,7 @@ class FieldMessage extends FieldOperate {
 		let container = createDivClass('message-container');
 		container.append(document.createTextNode(header));
 
-		let buttons = createDivClass('buttons');
+		let buttons = createDivClass('horizontal-menu');
 
 		for (let buttonText in buttonsFuncs) {
 			let button = createDivClass('button');

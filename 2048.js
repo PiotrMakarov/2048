@@ -1,6 +1,6 @@
 'use strict';
 
-let field = new Field({});
+let field = new Field({winPower: 5});
 let elem = field.render();
 
 field.newGame();

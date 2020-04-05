@@ -42,8 +42,8 @@ class FieldBase {
 		return message;
 	}
 
-	makeContainer(width, height) {
-		let container = createDivClass('container');
+	makeFieldContainer() {
+		let container = createDivClass('field-container');
 
 		let bgField = this.makeBGField(this.width, this.height);
 		let field = this.makeField(this.width, this.height);
@@ -59,7 +59,37 @@ class FieldBase {
 		return container;
 	}
 
+	makeContainer() {
+		let container = createDivClass('container');
+
+		let menu = createDivClass('horizontal-menu');
+		let leftButtons = createDivClass('horizontal-menu');
+		let rightButtons = createDivClass('horizontal-menu');
+
+		let newGameButton = createDivClass('button');
+		newGameButton.addEventListener('click', () => this.newGame());
+		newGameButton.innerText = 'New game';
+
+		let backButton = createDivClass('button');
+		backButton.innerText = 'Back';
+
+		let settingsButton = createDivClass('button');
+		settingsButton.innerText = 'Settings';
+
+		leftButtons.append(newGameButton, backButton);
+
+		rightButtons.append(settingsButton);
+
+		menu.append(leftButtons, rightButtons);
+
+		let fieldContainer = this.makeFieldContainer();
+		container.append(menu, fieldContainer);
+
+		return container;
+	}
+
 	newGame() {
+		this.hideMessage();
 		this.clear();
 
 		this.new = [];
