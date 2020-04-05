@@ -1,13 +1,7 @@
 'use strict';
 
-function createDivClass(...classNames){
-	let elem = document.createElement('div');
-	elem.classList.add(...classNames);
-	return elem;
-}
-
 class FieldBase {
-	constructor(width, height, startPower = 1, winPower = 11) {
+	constructor({width = 4, height = 4, startCount = 2, startPower = 1, winPower = 11}) {
 		this.width = width;
 		this.height = height;
 
@@ -15,7 +9,9 @@ class FieldBase {
 		this.spacing = parseFloat(getRootCssVar('spacing'));
 		this.timeout = parseFloat(getRootCssVar('transition')) * 1000;
 		this.timeoutMove = parseFloat(getRootCssVar('transition-move')) * 1000
+		this.messageTimeout = 1000;
 
+		this.startCount = startCount;
 		this.startPower = startPower;
 		this.winPower = winPower;
 	}
@@ -61,6 +57,18 @@ class FieldBase {
 		container.append(message);
 
 		return container;
+	}
+
+	newGame() {
+		this.clear();
+
+		this.new = [];
+		this.won = false;
+		this.lost = false;
+		this.paused = false;
+
+		for (let i = 0; i < this.startCount; i++)
+			this.addRandomBlock();
 	}
 
 	render() {

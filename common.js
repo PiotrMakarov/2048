@@ -32,6 +32,12 @@ function deltaToDirection(dx, dy) {
 	return null;
 }
 
+function createDivClass(...classNames){
+	let elem = document.createElement('div');
+	elem.classList.add(...classNames);
+	return elem;
+}
+
 function getRootCssVar(name) {
 	return getComputedStyle(document.documentElement).getPropertyValue('--' + name);
 }

@@ -1,10 +1,9 @@
 'use strict';
 
-let field = new Field(4,4);
+let field = new Field({});
 let elem = field.render();
 
-field.addRandomBlock();
-field.addRandomBlock();
+field.newGame();
 
 document.body.append(elem);
 

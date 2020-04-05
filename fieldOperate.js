@@ -68,6 +68,14 @@ class FieldOperate extends FieldBase {
 		return this.isValidCoord(x, y) && this.get(x, y) != null;
 	}
 
+	clear() {
+		for (let column of this.blocks) {
+			for (let block of column) {
+				if (block) this.delete(block);
+			}
+		}
+	}
+
 	hasBlock(block) {
 		return this.getBlockCoord(block) != null;
 	}

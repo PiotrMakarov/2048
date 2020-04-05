@@ -1,11 +1,10 @@
 'use strict';
 
-class Field extends FieldOperate {
+class Field extends FieldMessage {
 	constructor(...args) {
 		super(...args);
 
 		this.new = [];
-		this.lost = false;
 	}
 
 	merge(a, b) {
@@ -22,7 +21,7 @@ class Field extends FieldOperate {
 		setTimeout(() => this.delete(b, false), this.timeout);
 
 		if (Math.log2(sum) == this.winPower) {
-			this.win()
+			this.win();
 		}
 
 		return c;
@@ -73,16 +72,6 @@ class Field extends FieldOperate {
 		return true;
 	}
 
-	sendMessage(text, timeout) {
-		this.message.innerText = text;
-		this.message.classList.remove('hidden');
-		if (timeout) setTimeout(() => this.hideMessage(), timeout);
-	}
-
-	hideMessage() {
-		this.message.classList.add('hidden');
-	}
-
 	isMergeable(x, y) {
 		let text;
 		if (this.has(x, y)) text = this.getCoordText(x, y);
@@ -115,14 +104,6 @@ class Field extends FieldOperate {
 		return ret || this.freeCoords.length != 0;
 	}
 
-	lose() {
-		this.sendMessage('Game over');
-	}
-
-	win() {
-		this.sendMessage('You win!');
-	}
-
 	getGoSideCoords(direction) {
 		let ret = [];
 
@@ -149,6 +130,8 @@ class Field extends FieldOperate {
 	}
 
 	go(direction) {
+		if (this.paused) return;
+
 		let delta = directionToDelta[direction];
 		let changed = false;
 
