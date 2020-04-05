@@ -1,20 +1,16 @@
 'use strict';
 
 class FieldMessage extends FieldOperate {
-	sendMessage(container, timeoutHide = 0, timeout = this.messageTimeout) {
+	sendMessage(container, {hideDelay = 0, showDelay = 0}) {
 		setTimeout(() => {
 			this.paused = true;
 
 			this.message.innerHTML = '';
 			this.message.append(container);
 			this.message.classList.remove('hidden');
-		}, timeout);
+		}, showDelay);
 
-		if (timeoutHide) setTimeout(() => this.hideMessage(), timeout + timeoutHide);
-	}
-
-	sendTextMessage(text, timeoutHide = 0, timeout = this.messageTimeout) {
-		this.sendMessage(document.createTextNode(text), timeoutHide, timeout);
+		if (hideDelay) setTimeout(() => this.hideMessage(), showDelay + hideDelay);
 	}
 
 	hideMessage() {
@@ -22,9 +18,14 @@ class FieldMessage extends FieldOperate {
 		this.message.classList.add('hidden');
 	}
 
-	dialog(header, buttonsFuncs) {
+	dialog(headerText, text, buttonsFuncs, kwargs) {
 		let container = createDivClass('message-container');
-		container.append(document.createTextNode(header));
+
+		let header = document.createElement('h1');
+		header.innerText = headerText;
+		container.append(header);
+		if (text)
+			container.append(document.createTextNode(text));
 
 		let buttons = createDivClass('horizontal-menu');
 
@@ -38,15 +39,15 @@ class FieldMessage extends FieldOperate {
 
 		container.append(buttons);
 
-		this.sendMessage(container);
+		this.sendMessage(container, kwargs);
 	}
 
 	lose() {
 		if (this.lost) return;
 
-		this.dialog('Game over!', {
+		this.dialog('Game over!', '', {
 			'New game': () => this.newGame(),
-		})
+		}, {showDelay: this.messageTimeout})
 
 		this.lost = true;
 	}
@@ -54,11 +55,36 @@ class FieldMessage extends FieldOperate {
 	win() {
 		if (this.won) return;
 
-		this.dialog('You win!', {
+		this.dialog('You win!', '', {
 			'New game': () => this.newGame(),
 			'Continue': () => {},
-		});
+		}, {showDelay: this.messageTimeout});
 
 		this.won = true;
+	}
+
+	settings() {
+		let container = createDivClass('message-container');
+
+		let buttons = createDivClass('horizontal-menu');
+
+		let saveButton = createDivClass('button');
+		saveButton.innerText = 'Save';
+		saveButton.addEventListener('click',
+			() => this.dialog('Save settings?', 'New game will be started', {
+				'Yes': () => this.newGame(),
+				'No': () => this.hideMessage(),
+			}, {})
+		);
+
+		let closeButton = createDivClass('button');
+		closeButton.innerText = 'Close';
+		closeButton.addEventListener('click', () => this.hideMessage());
+
+		buttons.append(saveButton, closeButton);
+
+		container.append(buttons);
+
+		this.sendMessage(container, {});
 	}
 }

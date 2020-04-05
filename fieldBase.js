@@ -75,6 +75,7 @@ class FieldBase {
 
 		let settingsButton = createDivClass('button');
 		settingsButton.innerText = 'Settings';
+		settingsButton.addEventListener('click', () => this.settings());
 
 		leftButtons.append(newGameButton, backButton);
 
