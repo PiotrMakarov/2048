@@ -1,29 +1,32 @@
 'use strict';
 
 class FieldBase {
-	constructor({width = 4, height = 4, startCount = 2, startPower = 1, winPower = 11}) {
-		this.width = width;
-		this.height = height;
+	constructor(args) {
+		this.elem = null;
+
+		this.setParams(args);
 
 		this.size = parseFloat(getRootCssVar('size'));
 		this.spacing = parseFloat(getRootCssVar('spacing'));
 		this.timeout = parseFloat(getRootCssVar('transition')) * 1000;
-		this.timeoutMove = parseFloat(getRootCssVar('transition-move')) * 1000
+		this.timeoutMove = parseFloat(getRootCssVar('transition-move')) * 1000;
 		this.messageTimeout = 1000;
-
-		this.startCount = startCount;
-		this.startPower = startPower;
-		this.winPower = winPower;
 	}
 
+	setParams(args) {
+		if (this.params == undefined)
+			this.params = Object.assign(Object.assign({}, defaultParams), args);
+		else
+			this.params = Object.assign(Object.assign({}, this.params), args);
+	}
 
 	makeBGField() {
 		let field = createDivClass('field', 'bg');
 
-		setRootCssVar('width', this.width);
-		setRootCssVar('height', this.height);
+		setRootCssVar('width', this.params.width);
+		setRootCssVar('height', this.params.height);
 
-		for (let i = 0; i < this.width * this.height; i++) {
+		for (let i = 0; i < this.params.width * this.params.height; i++) {
 			let block = createDivClass('block');
 			field.append(block);
 		}
@@ -45,8 +48,8 @@ class FieldBase {
 	makeFieldContainer() {
 		let container = createDivClass('field-container');
 
-		let bgField = this.makeBGField(this.width, this.height);
-		let field = this.makeField(this.width, this.height);
+		let bgField = this.makeBGField(this.params.width, this.params.height);
+		let field = this.makeField(this.params.width, this.params.height);
 		let message = this.makeMessage();
 
 		this.field = field;
@@ -67,7 +70,7 @@ class FieldBase {
 		let rightButtons = createDivClass('horizontal-menu');
 
 		let newGameButton = createDivClass('button');
-		newGameButton.addEventListener('click', () => this.newGame());
+		newGameButton.addEventListener('click', () => this.newGame({}));
 		newGameButton.innerText = 'New game';
 
 		let backButton = createDivClass('button');
@@ -89,21 +92,41 @@ class FieldBase {
 		return container;
 	}
 
-	newGame() {
-		this.hideMessage();
+	makeBlocks() {
+		this.blocks = [];
+		for (let i = 0; i < this.params.width; i++) {
+			this.blocks.push([]);
+			for (let j = 0; j < this.params.height; j++) {
+				this.blocks[i].push(null);
+			}
+		}
+	}
+
+	newGame(args) {
 		this.clear();
+
+		this.setParams(args);
+		this.makeBlocks();
+
+		let newElem = this.makeContainer();
+
+		if (!this.elem) {
+			this.elem = newElem;
+			this.isFirstGame = false;
+		} else {
+			this.elem.replaceWith(newElem);
+			this.elem = newElem;
+		}
+
+		this.hideMessage();
 
 		this.new = [];
 		this.won = false;
 		this.lost = false;
 		this.paused = false;
 
-		for (let i = 0; i < this.startCount; i++)
+		for (let i = 0; i < this.params.startCount; i++)
 			this.addRandomBlock();
-	}
-
-	render() {
-		this.elem = this.makeContainer();
 
 		return this.elem;
 	}

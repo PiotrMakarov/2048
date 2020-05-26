@@ -1,8 +1,10 @@
 'use strict';
 
 class Field extends FieldMessage {
-	constructor(...args) {
-		super(...args);
+	constructor(args) {
+		super(args);
+
+		this.newGame();
 
 		this.new = [];
 	}
@@ -20,7 +22,7 @@ class Field extends FieldMessage {
 
 		setTimeout(() => this.delete(b, false), this.timeout);
 
-		if (Math.log2(sum) == this.winPower) {
+		if (Math.log2(sum) == this.params.winPower) {
 			this.win();
 		}
 
@@ -63,7 +65,7 @@ class Field extends FieldMessage {
 		if (free.length == 0) return false;
 
 		let coord = free[_.random(0, free.length-1)];
-		let power = this.startPower;
+		let power = this.params.startPower;
 		if (_.random(1, 10) == 1) power++;
 		let digit = 2 ** power;
 
@@ -94,8 +96,8 @@ class Field extends FieldMessage {
 	check() {
 		let ret = false;
 
-		for (let i = 0; i < this.width; i++) {
-			for (let j = 0; j < this.height; j++) {
+		for (let i = 0; i < this.params.width; i++) {
+			for (let j = 0; j < this.params.height; j++) {
 				if (this.blocks[i][j] == null) continue;
 				ret = ret || this.isMergeable(i, j);
 			}
@@ -112,9 +114,9 @@ class Field extends FieldMessage {
 		let iIndex = delta.indexOf(0);
 		let maxIndex = Number(!Boolean(iIndex));
 
-		let max = [this.width, this.height][iIndex];
+		let max = [this.params.width, this.params.height][iIndex];
 		let retMax = delta[maxIndex] == 1
-			? [this.width, this.height][maxIndex]-1
+			? [this.params.width, this.params.height][maxIndex]-1
 			: 0;
 
 		for (let i = 0; i < max; i++) {

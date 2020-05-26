@@ -1,24 +1,18 @@
 'use strict';
 
 class FieldOperate extends FieldBase {
-	constructor(...args) {
-		super(...args);
-		this.blocks = [];
-		for (let i = 0; i < this.width; i++) {
-			this.blocks.push([]);
-			for (let j = 0; j < this.height; j++) {
-				this.blocks[i].push(null);
-			}
-		}
+	constructor(args) {
+		super(args);
+		this.makeBlocks();
 	}
 
 	isValidCoord(x, y) {
-		return _.zipWith([this.width, this.height], [x, y], (max, x) => ((0 <= x) && (x < max)))
+		return _.zipWith([this.params.width, this.params.height], [x, y], (max, x) => ((0 <= x) && (x < max)))
 			.every(x => x == true);
 	}
 
 	powToShade(pow) {
-		let percents = 100 / (this.winPower - this.startPower) * (pow - this.startPower);
+		let percents = 100 / (this.params.winPower - this.params.startPower) * (pow - this.params.startPower);
 		if (percents < 0) percents = 0;
 		if (percents > 100) percents = 100;
 		return percents;
@@ -81,8 +75,8 @@ class FieldOperate extends FieldBase {
 	}
 
 	getBlockCoord(block) {
-		for (let i = 0; i < this.width; i++) {
-			for (let j = 0; j < this.height; j++) {
+		for (let i = 0; i < this.params.width; i++) {
+			for (let j = 0; j < this.params.height; j++) {
 				if (this.blocks[i][j] == block) return [i, j];
 			}
 		}
@@ -101,8 +95,8 @@ class FieldOperate extends FieldBase {
 	get freeCoords() {
 		let ret = [];
 
-		for (let i = 0; i < this.width; i++) {
-			for (let j = 0; j < this.height; j++) {
+		for (let i = 0; i < this.params.width; i++) {
+			for (let j = 0; j < this.params.height; j++) {
 				if (!this.has(i, j)) ret.push([i, j]);
 			}
 		}
@@ -120,7 +114,7 @@ class FieldOperate extends FieldBase {
 
 		let startCoord = this.getCoordPixels(x, y);
 		let endCoord = startCoord.map(x => x + this.size);
-		endCoord = _.zipWith(this.getCoordPixels(this.width, this.height), endCoord, _.subtract);
+		endCoord = _.zipWith(this.getCoordPixels(this.params.width, this.params.height), endCoord, _.subtract);
 
 		[block.style.left, block.style.top] = startCoord.map(x => x + 'px');
 		[block.style.right, block.style.bottom] = endCoord.map(x => x + 'px');

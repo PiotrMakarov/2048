@@ -1,9 +1,13 @@
+'use strict';
+
 let directionToDelta = {
 	up:    [0, -1],
 	down:  [0,  1],
 	left:  [-1, 0],
 	right: [1,  0],
 }
+
+const defaultParams = {width: 4, height: 4, startCount: 2, startPower: 1, winPower: 11}
 
 let deltaToDirectionArr = [];
 for (let direction in directionToDelta) {

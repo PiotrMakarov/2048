@@ -46,7 +46,7 @@ class FieldMessage extends FieldOperate {
 		if (this.lost) return;
 
 		this.dialog('Game over!', '', {
-			'New game': () => this.newGame(),
+			'New game': () => this.newGame({}),
 		}, {showDelay: this.messageTimeout})
 
 		this.lost = true;
@@ -56,7 +56,7 @@ class FieldMessage extends FieldOperate {
 		if (this.won) return;
 
 		this.dialog('You win!', '', {
-			'New game': () => this.newGame(),
+			'New game': () => this.newGame({}),
 			'Continue': () => {},
 		}, {showDelay: this.messageTimeout});
 
@@ -66,16 +66,40 @@ class FieldMessage extends FieldOperate {
 	settings() {
 		let container = createDivClass('message-container');
 
+		let settings = document.createElement('form');
+		settings.classList.add('settings');
+		settings.name = 'settings';
+		settings.innerHTML = 
+`
+<div>
+	<div>Size</div>
+	<input type="number" name="width" value="${this.params.width}"> ×
+	<input type="number" name="height" value="${this.params.height}">
+</div>
+<div>
+	<div>Start power</div>
+	<input type="number" name="start-power" value="${this.params.startPower}">
+</div>
+<div>
+	<div>Win power</div>
+	<input type="number" name="win-power" value="${this.params.winPower}">
+</div>
+`;
+
+		for (let elem of settings.children) {
+			elem.classList.add('horizontal-menu');
+		}
+
 		let buttons = createDivClass('horizontal-menu');
 
 		let saveButton = createDivClass('button');
 		saveButton.innerText = 'Save';
-		saveButton.addEventListener('click',
-			() => this.dialog('Save settings?', 'New game will be started', {
-				'Yes': () => this.newGame(),
-				'No': () => this.hideMessage(),
-			}, {})
-		);
+		saveButton.addEventListener('click', () => {
+			let newParams = {};
+			[newParams.startPower, newParams.winPower, newParams.width, newParams.height] =
+				['start-power', 'win-power', 'width', 'height'].map(x => +settings[x].value);
+			this.newGame(newParams);
+		})
 
 		let closeButton = createDivClass('button');
 		closeButton.innerText = 'Close';
@@ -83,7 +107,7 @@ class FieldMessage extends FieldOperate {
 
 		buttons.append(saveButton, closeButton);
 
-		container.append(buttons);
+		container.append(settings, buttons);
 
 		this.sendMessage(container, {});
 	}

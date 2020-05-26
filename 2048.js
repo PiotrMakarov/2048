@@ -1,11 +1,8 @@
 'use strict';
 
-let field = new Field({winPower: 11});
-let elem = field.render();
+let field = new Field({});
 
-field.newGame();
-
-document.body.append(elem);
+document.body.append(field.elem);
 
 let lastCoord = null;
 document.body.addEventListener('touchstart', function (event) {
