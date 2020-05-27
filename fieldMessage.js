@@ -71,23 +71,32 @@ class FieldMessage extends FieldOperate {
 		settings.name = 'settings';
 		settings.innerHTML = 
 `
-<div>
+<div class="horizontal-menu">
 	<div>Size</div>
-	<input type="number" name="width" value="${this.params.width}"> ×
-	<input type="number" name="height" value="${this.params.height}">
-</div>
-<div>
-	<div>Start power</div>
-	<input type="number" name="start-power" value="${this.params.startPower}">
-</div>
-<div>
-	<div>Win power</div>
-	<input type="number" name="win-power" value="${this.params.winPower}">
+	<div class="horizontal-menu tight">
+		<input type="number" name="width" value="${this.params.width}"> ×
+		<input type="number" name="height" value="${this.params.height}">
+	</div>
 </div>
 `;
 
-		for (let elem of settings.children) {
-			elem.classList.add('horizontal-menu');
+		let namesToText = {
+			startPower: 'Start power',
+			winPower: 'Win power',
+			startCount: 'Tiles count at start',
+		};
+
+		let names = ['width', 'height'];
+		for (let name in namesToText) { names.push(name); }
+
+		for (let name in namesToText) {
+			let newElem = createDivClass('horizontal-menu');
+			newElem.innerHTML =
+`
+<div>${namesToText[name]}</div>
+<input type="number" name="${name}" value="${this.params[name]}">
+`;
+			settings.append(newElem);
 		}
 
 		let buttons = createDivClass('horizontal-menu');
@@ -96,16 +105,25 @@ class FieldMessage extends FieldOperate {
 		saveButton.innerText = 'Save';
 		saveButton.addEventListener('click', () => {
 			let newParams = {};
-			[newParams.startPower, newParams.winPower, newParams.width, newParams.height] =
-				['start-power', 'win-power', 'width', 'height'].map(x => +settings[x].value);
+			for (let name of names) {
+				newParams[name] = +settings[name].value;
+			}
 			this.newGame(newParams);
+		})
+
+		let defaultsButton = createDivClass('button');
+		defaultsButton.innerText = 'Set defaults';
+		defaultsButton.addEventListener('click', () => {
+			for (let name of names) {
+				settings[name].value = defaultParams[name];
+			}
 		})
 
 		let closeButton = createDivClass('button');
 		closeButton.innerText = 'Close';
 		closeButton.addEventListener('click', () => this.hideMessage());
 
-		buttons.append(saveButton, closeButton);
+		buttons.append(saveButton, defaultsButton, closeButton);
 
 		container.append(settings, buttons);
 
