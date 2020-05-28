@@ -154,6 +154,7 @@ class Field extends FieldMessage {
 		this.new = [];
 
 		if (changed) {
+			this.backButton.classList.remove('disabled');
 			this.addRandomBlock();
 			if (!this.check()) this.lose();
 		}

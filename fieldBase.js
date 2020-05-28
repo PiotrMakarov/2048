@@ -74,14 +74,21 @@ class FieldBase {
 		newGameButton.addEventListener('click', () => this.newGame({}));
 		newGameButton.innerText = 'New game';
 
-		let backButton = createDivClass('button');
-		backButton.innerText = 'Back';
+		this.backButton = createDivClass('button');
+		this.backButton.innerText = 'Back';
+		this.backButton.addEventListener('click', () => {
+			if (this.backButton.classList.contains('disabled'))
+				return;
+
+			// this.back();
+			this.backButton.classList.add('disabled');
+		});
 
 		let settingsButton = createDivClass('button');
 		settingsButton.innerText = 'Settings';
 		settingsButton.addEventListener('click', () => this.settings());
 
-		leftButtons.append(newGameButton, backButton);
+		leftButtons.append(newGameButton, this.backButton);
 
 		rightButtons.append(settingsButton);
 
@@ -128,6 +135,8 @@ class FieldBase {
 
 		for (let i = 0; i < this.params.startCount; i++)
 			this.addRandomBlock();
+
+		this.backButton.classList.add('disabled');
 
 		return this.elem;
 	}
