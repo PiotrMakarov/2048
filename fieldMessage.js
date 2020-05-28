@@ -27,7 +27,7 @@ class FieldMessage extends FieldOperate {
 		if (text)
 			container.append(document.createTextNode(text));
 
-		let buttons = createDivClass('horizontal-menu');
+		let buttons = createDivClass('horizontal-menu', 'buttons');
 
 		for (let buttonText in buttonsFuncs) {
 			let button = createDivClass('button');
@@ -73,7 +73,7 @@ class FieldMessage extends FieldOperate {
 `
 <div class="horizontal-menu">
 	<div>Size</div>
-	<div class="horizontal-menu tight">
+	<div class="horizontal-menu">
 		<input type="number" name="width" value="${this.params.width}"> ×
 		<input type="number" name="height" value="${this.params.height}">
 	</div>
@@ -87,7 +87,7 @@ class FieldMessage extends FieldOperate {
 		};
 
 		let names = ['width', 'height'];
-		for (let name in namesToText) { names.push(name); }
+		for (let name in namesToText) names.push(name);
 
 		for (let name in namesToText) {
 			let newElem = createDivClass('horizontal-menu');
@@ -99,7 +99,22 @@ class FieldMessage extends FieldOperate {
 			settings.append(newElem);
 		}
 
-		let buttons = createDivClass('horizontal-menu');
+		let darkTheme = createDivClass('horizontal-menu');
+		darkTheme.innerHTML =
+`
+<div>Theme</div>
+<input type="checkbox" class="theme-switcher" id="theme-switcher" name="darkTheme">
+<label for="theme-switcher"></label>
+`;
+		settings.append(darkTheme);
+		settings.darkTheme.checked = this.darkTheme;
+		settings.darkTheme.addEventListener('click', () => {
+			this.darkTheme = settings.darkTheme.checked;
+			if (this.darkTheme) document.body.classList.add("dark");
+			else document.body.classList.remove("dark");
+		});
+
+		let buttons = createDivClass('horizontal-menu', 'buttons');
 
 		let saveButton = createDivClass('button');
 		saveButton.innerText = 'Save';
@@ -108,8 +123,10 @@ class FieldMessage extends FieldOperate {
 			for (let name of names) {
 				newParams[name] = +settings[name].value;
 			}
-			this.newGame(newParams);
-		})
+
+			if (_.isEqual(this.params, newParams)) this.hideMessage();
+			else this.newGame(newParams);
+		});
 
 		let defaultsButton = createDivClass('button');
 		defaultsButton.innerText = 'Set defaults';
@@ -117,7 +134,7 @@ class FieldMessage extends FieldOperate {
 			for (let name of names) {
 				settings[name].value = defaultParams[name];
 			}
-		})
+		});
 
 		let closeButton = createDivClass('button');
 		closeButton.innerText = 'Close';

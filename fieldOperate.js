@@ -24,7 +24,7 @@ class FieldOperate extends FieldBase {
 		let shade = this.powToShade(pow);
 		return {
 			bg: `hsl(0, 0%, ${shade}%)`,
-			fg: shade < 60 ? 'white' : 'black',
+			fg: shade < 60 ? 'var(--light)' : 'var(--dark)',
 		};
 	}
 

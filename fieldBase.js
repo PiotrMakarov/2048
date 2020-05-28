@@ -6,6 +6,7 @@ class FieldBase {
 
 		this.setParams(args);
 
+		this.darkTheme = false;
 		this.size = parseFloat(getRootCssVar('size'));
 		this.spacing = parseFloat(getRootCssVar('spacing'));
 		this.timeout = parseFloat(getRootCssVar('transition')) * 1000;
