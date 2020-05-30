@@ -1,4 +1,21 @@
+/* Hosting special section */
+
 img[alt$="www.000webhost.com"] { display: none; } /* for 000webhost */
+
+/* Fonts on my hosting */
+@font-face {
+	font-family: roboto;
+	src: url(./roboto/Roboto-Regular.ttf);
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: roboto;
+	src: url(./roboto/Roboto-Bold.ttf);
+	font-weight: bold;
+}
+
+/* End of hosting special section */
 
 :root {
 	--size: 100px;
@@ -53,14 +70,12 @@ body {
 	margin: 0;
 	height: 100vh;
 
-	font-family: roboto;
-
 	background: var(--color2);
 }
 
 * {
+	font-family: roboto;
 	font-size: var(--font-size);
-	font-weight: bold;
 	color: var(--color1);
 	transition-property: color, background;
 	transition-duration: var(--transition);
@@ -77,6 +92,7 @@ body {
 
 .button {
 	margin: 0 10px;
+	font-weight: bold;
 
 	cursor: pointer;
 	user-select: none;
@@ -219,7 +235,6 @@ input[type=number] {
 	height: var(--height);
 	border-radius: var(--radius);
 	user-select: none;
-	font-weight: normal;
 }
 
 @keyframes block-appear-animation {
