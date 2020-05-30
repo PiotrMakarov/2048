@@ -234,6 +234,18 @@ input[type=number] {
 	}
 }
 
+@keyframes block-delete-animation {
+	0% {
+		opacity: 1;
+		transform: scaleX(1) scaleY(1);
+	}
+
+	100% {
+		opacity: 0;
+		transform: scaleX(0) scaleY(0);
+	}
+}
+
 @keyframes block-merge-animation {
 	0% {
 		opacity: 0;
@@ -250,12 +262,52 @@ input[type=number] {
 	}
 }
 
+@keyframes block-unmerge-animation {
+	0% {
+		transform: scaleX(1) scaleY(1);
+	}
+
+	30% {
+		opacity: 1;
+		transform: scaleX(1.1) scaleY(1.1);
+	}
+
+	100% {
+		opacity: 0;
+		transform: scaleX(0) scaleY(0);
+	}
+}
+
+@keyframes block-unmerge-1-animation {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+.block {
+	transition: var(--transition-move);
+}
 .field:not(.bg) .block {
 	position: absolute;
-	transition: var(--transition-move);
 	animation: var(--transition) var(--timing-function) 0s 1 block-appear-animation;
 }
 
 .field:not(.bg) .block.merge {
 	animation: var(--transition) var(--timing-function) 0s 1 block-merge-animation;
+}
+
+.field:not(.bg) .block.unmerge {
+	animation: var(--transition) var(--timing-function) 0s 1 block-unmerge-animation;
+}
+
+.field:not(.bg) .block.unmerge-1 {
+	animation: var(--transition) var(--timing-function) 0s 1 block-unmerge-1-animation;
+}
+
+.field:not(.bg) .block.delete {
+	animation: var(--transition) var(--timing-function) 0s 1 block-delete-animation;
 }

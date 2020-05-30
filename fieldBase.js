@@ -80,7 +80,7 @@ class FieldBase {
 			if (this.backButton.classList.contains('disabled'))
 				return;
 
-			// this.back();
+			this.back();
 			this.backButton.classList.add('disabled');
 		});
 
@@ -132,6 +132,8 @@ class FieldBase {
 		this.won = false;
 		this.lost = false;
 		this.paused = false;
+		this.backPressed = 0;
+		this.settingsOpened = false;
 
 		for (let i = 0; i < this.params.startCount; i++)
 			this.addRandomBlock();

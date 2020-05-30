@@ -3,15 +3,15 @@
 class Field extends FieldMessage {
 	constructor(args) {
 		super(args);
-
 		this.newGame();
-
 		this.new = [];
+		this.lastStep = [];
 	}
 
-	merge(a, b) {
+	merge(a, b, write = false) {
 		if (a.innerText != b.innerText) return null;
 
+		let coordA = this.getBlockCoord(a);
 		let coord = this.getBlockCoord(b);
 		let sum = _.sum([a, b].map(x => Number(x.innerText)));
 
@@ -24,6 +24,14 @@ class Field extends FieldMessage {
 
 		if (Math.log2(sum) == this.params.winPower) {
 			this.win();
+		}
+
+		if (write) {
+			this.lastStep.push({
+				type: 'merge',
+				old: coordA,
+				new: coord
+			});
 		}
 
 		return c;
@@ -53,14 +61,14 @@ class Field extends FieldMessage {
 		if (this.has(...coord)) {
 			let mergeBlock = this.get(...coord);
 			if (!this.new.includes(mergeBlock))
-				merged = this.merge(block, mergeBlock);
+				merged = this.merge(block, mergeBlock, true);
 		}
-		if (!merged) this.move(block, ...preCoord);
+		if (!merged) this.move(block, ...preCoord, true);
 
 		return merged || moved;
 	}
 
-	addRandomBlock() {
+	addRandomBlock(write = false) {
 		let free = this.freeCoords;
 		if (free.length == 0) return false;
 
@@ -69,7 +77,14 @@ class Field extends FieldMessage {
 		if (_.random(1, 10) == 1) power++;
 		let digit = 2 ** power;
 
-		this.add(...coord, digit);
+		let newBlock = this.add(...coord, digit);
+
+		if (write) {
+			this.lastStep.push({
+				type: 'add',
+				block: newBlock
+			});
+		}
 
 		return true;
 	}
@@ -133,6 +148,7 @@ class Field extends FieldMessage {
 
 	go(direction) {
 		if (this.paused) return;
+		this.lastStep = [];
 
 		let delta = directionToDelta[direction];
 		let changed = false;
@@ -155,8 +171,35 @@ class Field extends FieldMessage {
 
 		if (changed) {
 			this.backButton.classList.remove('disabled');
-			this.addRandomBlock();
+			this.addRandomBlock(true);
 			if (!this.check()) this.lose();
+		}
+	}
+
+	unmerge(a, b) {
+		let mergeResult = this.get(...a);
+		let valueBeforeMerge = +mergeResult.innerText / 2;
+
+		this.delete(mergeResult, true, 'unmerge');
+		this.add(...a, valueBeforeMerge);
+		let blockToMove = this.add(...a, valueBeforeMerge, false, false);
+		blockToMove.classList.add('unmerge-1')
+		setTimeout(() => this.move(blockToMove, ...b));
+	}
+
+	back() {
+		this.hideMessage();
+		this.won = this.lost = false;
+		this.backPressed++;
+
+		this.lastStep.reverse();
+		for (let action of this.lastStep) {
+			if (action.type == 'add') this.delete(action.block, true, 'delete');
+			else if (action.type == 'move')
+				this.move(this.get(...action.new), ...action.old);
+			else if (action.type == 'merge') {
+				this.unmerge(action.new, action.old);
+			}
 		}
 	}
 }

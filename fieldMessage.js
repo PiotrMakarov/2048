@@ -15,6 +15,7 @@ class FieldMessage extends FieldOperate {
 
 	hideMessage() {
 		this.paused = false;
+		this.settingsOpened = false;
 		this.message.classList.add('hidden');
 	}
 
@@ -55,7 +56,11 @@ class FieldMessage extends FieldOperate {
 	win() {
 		if (this.won) return;
 
-		this.dialog('You win!', '', {
+		let backMessage = this.backPressed == 0
+			? 'You never pressed Back!'
+			: `You pressed back ${this.backPressed} times`;
+
+		this.dialog('You win!', backMessage, {
 			'New game': () => this.newGame({}),
 			'Continue': () => {},
 		}, {showDelay: this.messageTimeout});
@@ -64,6 +69,11 @@ class FieldMessage extends FieldOperate {
 	}
 
 	settings() {
+		if (this.settingsOpened) {
+			this.hideMessage();
+			return;
+		}
+
 		let container = createDivClass('message-container');
 
 		let settings = document.createElement('form');
@@ -145,5 +155,6 @@ class FieldMessage extends FieldOperate {
 		container.append(settings, buttons);
 
 		this.sendMessage(container, {});
+		this.settingsOpened = true;
 	}
 }

@@ -24,34 +24,34 @@ class FieldOperate extends FieldBase {
 		let shade = this.powToShade(pow);
 		return {
 			bg: `hsl(0, 0%, ${shade}%)`,
-			fg: shade < 60 ? 'var(--light)' : 'var(--dark)',
+			fg: shade < 50 ? 'var(--light)' : 'var(--dark)',
 		};
 	}
 
-	add(x, y, text, merge = false) {
+	add(x, y, text, merge = false, logical = true) {
 		let block = createDivClass('block');
-		block.innerText = text;
-
-		let {bg, fg} = this.textToColor(text);
-		block.style.background = bg;
-		block.style.color = fg;
+		this.setBlockText(block, text);
 
 		if (merge) block.classList.add('merge');
 
 		this.field.append(block);
-		this.blocks[x][y] = block;
 
-		this.move(block, x, y);
+		this.move(block, x, y, false, logical);
 
 		return block;
 	}
 
-	delete(block, deleteFromBlocks = true) {
-		block.remove();
-		if (!deleteFromBlocks) return;
+	delete(block, logical = true, anim = null) {
+		if (logical) {
+			let coord = this.getBlockCoord(block);
+			this.blocks[coord[0]][coord[1]] = null;
+		}
 
-		let coord = this.getBlockCoord(block);
-		this.blocks[coord[0]][coord[1]] = null;
+		if (anim) {
+			block.classList.add(anim);
+			setTimeout(() => block.remove(), this.timeout);
+		} else block.remove();
+
 	}
 
 	get(x, y) {
@@ -84,12 +84,16 @@ class FieldOperate extends FieldBase {
 		return null;
 	}
 
-	getBlockText(block) {
-		return block.innerText;
+	setBlockText(block, text) {
+		let {bg, fg} = this.textToColor(text);
+		block.innerText = text;
+		block.style.background = bg;
+		block.style.color = fg;
+
 	}
 
 	getCoordText(x, y) {
-		return this.getBlockText(this.get(x, y));
+		return this.get(x, y).innerText;
 	}
 
 	get freeCoords() {
@@ -108,9 +112,13 @@ class FieldOperate extends FieldBase {
 		return [x, y].map(coord => coord * this.size + (coord + 1) * this.spacing);
 	}
 
-	move(block, x, y) {
-		let old = this.getBlockCoord(block);
-		this.blocks[old[0]][old[1]] = null;
+	move(block, x, y, write = false, logical = true) {
+		let old;
+		if (logical) {
+			old = this.getBlockCoord(block);
+			if (old) this.blocks[old[0]][old[1]] = null;
+			this.blocks[x][y] = block;
+		}
 
 		let startCoord = this.getCoordPixels(x, y);
 		let endCoord = startCoord.map(x => x + this.size);
@@ -119,6 +127,14 @@ class FieldOperate extends FieldBase {
 		[block.style.left, block.style.top] = startCoord.map(x => x + 'px');
 		[block.style.right, block.style.bottom] = endCoord.map(x => x + 'px');
 
-		this.blocks[x][y] = block;
+		if (!logical) return;
+
+		if (write && !_.isEqual(old, [x, y])) {
+			this.lastStep.push({
+				type: 'move',
+				old: old,
+				new: [x, y]
+			});
+		}
 	}
 }
