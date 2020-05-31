@@ -130,7 +130,7 @@ class FieldOperate extends FieldBase {
 		if (!logical) return;
 
 		if (write && !_.isEqual(old, [x, y])) {
-			this.lastStep.push({
+			this.newStep.push({
 				type: 'move',
 				old: old,
 				new: [x, y]

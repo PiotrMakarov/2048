@@ -6,6 +6,7 @@ class Field extends FieldMessage {
 		this.newGame();
 		this.new = [];
 		this.lastStep = [];
+		this.clearLastStep = false;
 	}
 
 	merge(a, b, write = false) {
@@ -27,7 +28,7 @@ class Field extends FieldMessage {
 		}
 
 		if (write) {
-			this.lastStep.push({
+			this.newStep.push({
 				type: 'merge',
 				old: coordA,
 				new: coord
@@ -80,7 +81,7 @@ class Field extends FieldMessage {
 		let newBlock = this.add(...coord, digit);
 
 		if (write) {
-			this.lastStep.push({
+			this.newStep.push({
 				type: 'add',
 				block: newBlock
 			});
@@ -148,7 +149,7 @@ class Field extends FieldMessage {
 
 	go(direction) {
 		if (this.paused) return;
-		this.lastStep = [];
+		this.newStep = [];
 
 		let delta = directionToDelta[direction];
 		let changed = false;
@@ -173,6 +174,7 @@ class Field extends FieldMessage {
 			this.backButton.classList.remove('disabled');
 			this.addRandomBlock(true);
 			if (!this.check()) this.lose();
+			this.lastStep = this.newStep;
 		}
 	}
 
