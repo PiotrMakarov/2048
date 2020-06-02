@@ -104,16 +104,6 @@ class FieldBase {
 		return container;
 	}
 
-	makeBlocks() {
-		this.blocks = [];
-		for (let i = 0; i < this.params.width; i++) {
-			this.blocks.push([]);
-			for (let j = 0; j < this.params.height; j++) {
-				this.blocks[i].push(null);
-			}
-		}
-	}
-
 	addRandomBlocks() {
 		for (let i = 0; i < this.params.startCount; i++)
 			this.addRandomBlock();
@@ -123,13 +113,10 @@ class FieldBase {
 		this.clear();
 
 		this.setParams(args);
-		this.makeBlocks();
 
 		let newElem = this.makeContainer();
 
 		this.new = [];
-		this.won = false;
-		this.lost = false;
 		this.paused = false;
 		this.settingsOpened = false;
 
@@ -137,6 +124,8 @@ class FieldBase {
 			this.elem = newElem;
 			this.lastStep = getJSONCookie('lastStep') || [];
 			this.backPressed = getJSONCookie('backPressed') || 0;
+			this.won = getJSONCookie('won') || false;
+			this.lost = getJSONCookie('lost') || false;
 			let oldBlocks = getJSONCookie('blocks');
 			if (oldBlocks) this.fillWithBlocks(oldBlocks);
 			else this.addRandomBlocks();
@@ -145,6 +134,8 @@ class FieldBase {
 			this.elem = newElem;
 			this.lastStep = [];
 			this.backPressed = 0;
+			this.won = false;
+			this.lost = false;
 			this.addRandomBlocks();
 		}
 

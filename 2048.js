@@ -36,9 +36,14 @@ document.body.addEventListener('keydown', function (event) {
 
 window.onload = () => document.body.append(field.elem);
 window.onunload = () => {
-	field.makeBlocksCookie();
+	if (field.lost) {
+		setJSONCookie('blocks', null);
+		field.lost = false;
+	} else field.makeBlocksCookie();
 	setJSONCookie('settings', field.params);
 	setJSONCookie('lastStep', field.lastStep);
 	setJSONCookie('backPressed', field.backPressed);
 	setJSONCookie('darkTheme', field.darkTheme);
+	setJSONCookie('won', field.won);
+	setJSONCookie('lost', field.lost);
 };

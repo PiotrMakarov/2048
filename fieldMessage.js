@@ -48,7 +48,7 @@ class FieldMessage extends FieldOperate {
 
 		this.dialog('Game over!', '', {
 			'New game': () => this.newGame({}),
-		}, {showDelay: this.messageTimeout})
+		}, {});
 
 		this.lost = true;
 	}
@@ -63,7 +63,7 @@ class FieldMessage extends FieldOperate {
 		this.dialog('You win!', backMessage, {
 			'New game': () => this.newGame({}),
 			'Continue': () => {},
-		}, {showDelay: this.messageTimeout});
+		}, {});
 
 		this.won = true;
 	}

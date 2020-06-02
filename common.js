@@ -36,6 +36,18 @@ function deltaToDirection(dx, dy) {
 	return null;
 }
 
+function empty2DArray(x, y, value) {
+	let ret = [];
+	for (let i = 0; i < x; i++) {
+		ret.push([]);
+		for (let j = 0; j < y; j++) {
+			ret[i].push(null);
+		}
+	}
+
+	return ret;
+}
+
 function createDivClass(...classNames){
 	let elem = document.createElement('div');
 	elem.classList.add(...classNames);
