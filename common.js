@@ -44,7 +44,9 @@ function createDivClass(...classNames){
 
 function getJSONCookie(name) {
 	let ret = Cookies.get(name);
-	if (ret != undefined) return JSON.parse(ret);
+	if (ret != undefined) {
+		return JSON.parse(ret);
+	}
 }
 
 function setJSONCookie(name, value) {

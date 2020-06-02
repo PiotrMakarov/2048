@@ -1,9 +1,12 @@
 'use strict';
 
+let darkTheme = getJSONCookie('darkTheme') || false;
+if (darkTheme) document.body.classList.add('dark');
+
 let settings = getJSONCookie('settings');
 if (settings == undefined) settings = {};
 
-let field = new Field(settings);
+let field = new Field(settings, darkTheme);
 
 let lastCoord = null;
 document.body.addEventListener('touchstart', function (event) {
@@ -37,4 +40,5 @@ window.onunload = () => {
 	setJSONCookie('settings', field.params);
 	setJSONCookie('lastStep', field.lastStep);
 	setJSONCookie('backPressed', field.backPressed);
+	setJSONCookie('darkTheme', field.darkTheme);
 };

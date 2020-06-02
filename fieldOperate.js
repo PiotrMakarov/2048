@@ -1,8 +1,8 @@
 'use strict';
 
 class FieldOperate extends FieldBase {
-	constructor(args) {
-		super(args);
+	constructor(...args) {
+		super(...args);
 		this.makeBlocks();
 	}
 

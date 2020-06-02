@@ -1,12 +1,13 @@
 'use strict';
 
 class FieldBase {
-	constructor(args) {
+	constructor(args, darkTheme) {
 		this.elem = null;
 
 		this.setParams(args);
 
-		this.darkTheme = false;
+		this.darkTheme = darkTheme;
+
 		this.size = parseFloat(getRootCssVar('size'));
 		this.spacing = parseFloat(getRootCssVar('spacing'));
 		this.timeout = parseFloat(getRootCssVar('transition')) * 1000;

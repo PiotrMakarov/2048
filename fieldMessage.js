@@ -120,8 +120,8 @@ class FieldMessage extends FieldOperate {
 		settings.darkTheme.checked = this.darkTheme;
 		settings.darkTheme.addEventListener('click', () => {
 			this.darkTheme = settings.darkTheme.checked;
-			if (this.darkTheme) document.body.classList.add("dark");
-			else document.body.classList.remove("dark");
+			if (this.darkTheme) document.body.classList.add('dark');
+			else document.body.classList.remove('dark');
 		});
 
 		let buttons = createDivClass('horizontal-menu', 'buttons');
