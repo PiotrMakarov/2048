@@ -42,6 +42,15 @@ function createDivClass(...classNames){
 	return elem;
 }
 
+function getJSONCookie(name) {
+	let ret = Cookies.get(name);
+	if (ret != undefined) return JSON.parse(ret);
+}
+
+function setJSONCookie(name, value) {
+	Cookies.set(name, JSON.stringify(value), {expires: 30});
+}
+
 function getRootCssVar(name) {
 	return getComputedStyle(document.documentElement).getPropertyValue('--' + name);
 }

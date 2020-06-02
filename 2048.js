@@ -1,8 +1,9 @@
 'use strict';
 
-let field = new Field({});
+let settings = getJSONCookie('settings');
+if (settings == undefined) settings = {};
 
-document.body.append(field.elem);
+let field = new Field(settings);
 
 let lastCoord = null;
 document.body.addEventListener('touchstart', function (event) {
@@ -29,3 +30,5 @@ document.body.addEventListener('keydown', function (event) {
 
 	field.go(direction);
 });
+
+window.onload = () => document.body.append(field.elem);

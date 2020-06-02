@@ -112,6 +112,25 @@ class FieldOperate extends FieldBase {
 		return [x, y].map(coord => coord * this.size + (coord + 1) * this.spacing);
 	}
 
+	fillWithBlocks(blocks) {
+		for (let i = 0; i < this.params.width; i++) {
+			for (let j = 0; j < this.params.height; j++)
+				if (blocks[i][j]) this.add(i, j, blocks[i][j]);
+		}
+	}
+
+	makeBlocksCookie() {
+		let blocks = [];
+		for (let i = 0; i < this.params.width; i++) {
+			blocks.push([]);
+			for (let j = 0; j < this.params.height; j++) {
+				if (this.blocks[i][j]) blocks[i].push(this.blocks[i][j].innerText);
+				else blocks[i].push(null);
+			}
+		}
+		setJSONCookie('blocks', blocks);
+	}
+
 	move(block, x, y, write = false, logical = true) {
 		let old;
 		if (logical) {
@@ -136,5 +155,34 @@ class FieldOperate extends FieldBase {
 				new: [x, y]
 			});
 		}
+	}
+
+	merge(a, b, write = false) {
+		if (a.innerText != b.innerText) return null;
+
+		let coordA = this.getBlockCoord(a);
+		let coord = this.getBlockCoord(b);
+		let sum = _.sum([a, b].map(x => Number(x.innerText)));
+
+		this.move(a, ...coord);
+
+		setTimeout(() => this.delete(a, false), this.timeoutMove);
+		let c = this.add(coord[0], coord[1], sum, true);
+
+		setTimeout(() => this.delete(b, false), this.timeout);
+
+		if (Math.log2(sum) == this.params.winPower) {
+			this.win();
+		}
+
+		if (write) {
+			this.newStep.push({
+				type: 'merge',
+				old: coordA,
+				new: coord
+			});
+		}
+
+		return c;
 	}
 }

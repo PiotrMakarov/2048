@@ -5,37 +5,6 @@ class Field extends FieldMessage {
 		super(args);
 		this.newGame();
 		this.new = [];
-		this.lastStep = [];
-		this.clearLastStep = false;
-	}
-
-	merge(a, b, write = false) {
-		if (a.innerText != b.innerText) return null;
-
-		let coordA = this.getBlockCoord(a);
-		let coord = this.getBlockCoord(b);
-		let sum = _.sum([a, b].map(x => Number(x.innerText)));
-
-		this.move(a, ...coord);
-
-		setTimeout(() => this.delete(a, false), this.timeoutMove);
-		let c = this.add(coord[0], coord[1], sum, true);
-
-		setTimeout(() => this.delete(b, false), this.timeout);
-
-		if (Math.log2(sum) == this.params.winPower) {
-			this.win();
-		}
-
-		if (write) {
-			this.newStep.push({
-				type: 'merge',
-				old: coordA,
-				new: coord
-			});
-		}
-
-		return c;
 	}
 
 	getObstacleCoord(block, dx, dy) {
@@ -83,7 +52,7 @@ class Field extends FieldMessage {
 		if (write) {
 			this.newStep.push({
 				type: 'add',
-				block: newBlock
+				coord: coord
 			});
 		}
 
@@ -175,7 +144,10 @@ class Field extends FieldMessage {
 			this.addRandomBlock(true);
 			if (!this.check()) this.lose();
 			this.lastStep = this.newStep;
+			setJSONCookie('lastStep', this.lastStep);
 		}
+
+		this.makeBlocksCookie();
 	}
 
 	unmerge(a, b) {
@@ -193,15 +165,19 @@ class Field extends FieldMessage {
 		this.hideMessage();
 		this.won = this.lost = false;
 		this.backPressed++;
+		setJSONCookie('backPressed', this.backPressed);
 
 		this.lastStep.reverse();
 		for (let action of this.lastStep) {
-			if (action.type == 'add') this.delete(action.block, true, 'delete');
+			if (action.type == 'add') this.delete(this.get(...action.coord), true, 'delete');
 			else if (action.type == 'move')
 				this.move(this.get(...action.new), ...action.old);
 			else if (action.type == 'merge') {
 				this.unmerge(action.new, action.old);
 			}
 		}
+
+		Cookies.remove('lastStep');
+		this.makeBlocksCookie();
 	}
 }

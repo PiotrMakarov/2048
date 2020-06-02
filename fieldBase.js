@@ -15,10 +15,12 @@ class FieldBase {
 	}
 
 	setParams(args) {
-		if (this.params == undefined)
-			this.params = Object.assign(Object.assign({}, defaultParams), args);
-		else
-			this.params = Object.assign(Object.assign({}, this.params), args);
+		let paramsToSet = this.params == undefined
+			? Object.assign(Object.assign({}, defaultParams), args)
+			: Object.assign(Object.assign({}, this.params), args);
+
+		setJSONCookie('settings', paramsToSet);
+		this.params = paramsToSet;
 	}
 
 	makeBGField() {
@@ -71,7 +73,10 @@ class FieldBase {
 		let rightButtons = createDivClass('horizontal-menu');
 
 		let newGameButton = createDivClass('button');
-		newGameButton.addEventListener('click', () => this.newGame({}));
+		newGameButton.addEventListener('click', () => {
+			Cookies.remove('blocks');
+			this.newGame({});
+		});
 		newGameButton.innerText = 'New game';
 
 		this.backButton = createDivClass('button');
@@ -132,13 +137,20 @@ class FieldBase {
 		this.won = false;
 		this.lost = false;
 		this.paused = false;
-		this.backPressed = 0;
 		this.settingsOpened = false;
+		this.lastStep = getJSONCookie('lastStep') || [];
+		this.backPressed = getJSONCookie('backPressed') || 0;
 
-		for (let i = 0; i < this.params.startCount; i++)
-			this.addRandomBlock();
+		let oldBlocks = getJSONCookie('blocks');
+		if (oldBlocks) this.fillWithBlocks(oldBlocks);
+		else {
+			for (let i = 0; i < this.params.startCount; i++)
+				this.addRandomBlock();
+			this.makeBlocksCookie();
+		}
 
-		this.backButton.classList.add('disabled');
+		if (this.lastStep.length == 0)
+			this.backButton.classList.add('disabled');
 
 		return this.elem;
 	}
