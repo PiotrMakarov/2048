@@ -32,3 +32,9 @@ document.body.addEventListener('keydown', function (event) {
 });
 
 window.onload = () => document.body.append(field.elem);
+window.onunload = () => {
+	field.makeBlocksCookie();
+	setJSONCookie('settings', field.params);
+	setJSONCookie('lastStep', field.lastStep);
+	setJSONCookie('backPressed', field.backPressed);
+};

@@ -19,8 +19,7 @@ class FieldBase {
 			? Object.assign(Object.assign({}, defaultParams), args)
 			: Object.assign(Object.assign({}, this.params), args);
 
-		setJSONCookie('settings', paramsToSet);
-		this.params = paramsToSet;
+			this.params = paramsToSet;
 	}
 
 	makeBGField() {
@@ -74,7 +73,6 @@ class FieldBase {
 
 		let newGameButton = createDivClass('button');
 		newGameButton.addEventListener('click', () => {
-			Cookies.remove('blocks');
 			this.newGame({});
 		});
 		newGameButton.innerText = 'New game';
@@ -115,6 +113,11 @@ class FieldBase {
 		}
 	}
 
+	addRandomBlocks() {
+		for (let i = 0; i < this.params.startCount; i++)
+			this.addRandomBlock();
+	}
+
 	newGame(args) {
 		this.clear();
 
@@ -123,31 +126,28 @@ class FieldBase {
 
 		let newElem = this.makeContainer();
 
-		if (!this.elem) {
-			this.elem = newElem;
-			this.isFirstGame = false;
-		} else {
-			this.elem.replaceWith(newElem);
-			this.elem = newElem;
-		}
-
-		this.hideMessage();
-
 		this.new = [];
 		this.won = false;
 		this.lost = false;
 		this.paused = false;
 		this.settingsOpened = false;
-		this.lastStep = getJSONCookie('lastStep') || [];
-		this.backPressed = getJSONCookie('backPressed') || 0;
 
-		let oldBlocks = getJSONCookie('blocks');
-		if (oldBlocks) this.fillWithBlocks(oldBlocks);
-		else {
-			for (let i = 0; i < this.params.startCount; i++)
-				this.addRandomBlock();
-			this.makeBlocksCookie();
+		if (!this.elem) { // first game
+			this.elem = newElem;
+			this.lastStep = getJSONCookie('lastStep') || [];
+			this.backPressed = getJSONCookie('backPressed') || 0;
+			let oldBlocks = getJSONCookie('blocks');
+			if (oldBlocks) this.fillWithBlocks(oldBlocks);
+			else this.addRandomBlocks();
+		} else {
+			this.elem.replaceWith(newElem);
+			this.elem = newElem;
+			this.lastStep = [];
+			this.backPressed = 0;
+			this.addRandomBlocks();
 		}
+
+		this.hideMessage();
 
 		if (this.lastStep.length == 0)
 			this.backButton.classList.add('disabled');

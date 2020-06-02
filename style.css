@@ -293,7 +293,7 @@ input[type=number] {
 	}
 }
 
-@keyframes block-unmerge-1-animation {
+@keyframes block-unmerge-move-animation {
 	0% {
 		opacity: 0;
 	}
@@ -319,8 +319,8 @@ input[type=number] {
 	animation: var(--transition) var(--timing-function) 0s 1 block-unmerge-animation;
 }
 
-.field:not(.bg) .block.unmerge-1 {
-	animation: var(--transition) var(--timing-function) 0s 1 block-unmerge-1-animation;
+.field:not(.bg) .block.unmerge-move {
+	animation: var(--transition) var(--timing-function) 0s 1 block-unmerge-move-animation;
 }
 
 .field:not(.bg) .block.delete {

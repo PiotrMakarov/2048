@@ -144,10 +144,7 @@ class Field extends FieldMessage {
 			this.addRandomBlock(true);
 			if (!this.check()) this.lose();
 			this.lastStep = this.newStep;
-			setJSONCookie('lastStep', this.lastStep);
 		}
-
-		this.makeBlocksCookie();
 	}
 
 	unmerge(a, b) {
@@ -157,7 +154,7 @@ class Field extends FieldMessage {
 		this.delete(mergeResult, true, 'unmerge');
 		this.add(...a, valueBeforeMerge);
 		let blockToMove = this.add(...a, valueBeforeMerge, false, false);
-		blockToMove.classList.add('unmerge-1')
+		blockToMove.classList.add('unmerge-move')
 		setTimeout(() => this.move(blockToMove, ...b));
 	}
 
@@ -165,7 +162,6 @@ class Field extends FieldMessage {
 		this.hideMessage();
 		this.won = this.lost = false;
 		this.backPressed++;
-		setJSONCookie('backPressed', this.backPressed);
 
 		this.lastStep.reverse();
 		for (let action of this.lastStep) {
@@ -176,8 +172,5 @@ class Field extends FieldMessage {
 				this.unmerge(action.new, action.old);
 			}
 		}
-
-		Cookies.remove('lastStep');
-		this.makeBlocksCookie();
 	}
 }
