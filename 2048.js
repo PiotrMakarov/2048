@@ -34,7 +34,7 @@ document.body.addEventListener('keydown', function (event) {
 	field.go(direction);
 });
 
-window.onload = () => document.body.append(field.elem);
+document.fonts.ready.then(() => document.body.append(field.elem));
 window.onunload = () => {
 	if (field.lost) {
 		setJSONCookie('blocks', null);

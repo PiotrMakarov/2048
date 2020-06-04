@@ -3,7 +3,7 @@
 class FieldOperate extends FieldBase {
 	constructor(...args) {
 		super(...args);
-		this.blocks = empty2DArray(this.params.width, this.params.height, null);
+		this.makeBlocks();
 	}
 
 	isValidCoord(x, y) {

@@ -109,6 +109,10 @@ class FieldBase {
 			this.addRandomBlock();
 	}
 
+	makeBlocks() {
+		this.blocks = empty2DArray(this.params.width, this.params.height, null);
+	}
+
 	newGame(args) {
 		this.clear();
 
@@ -136,6 +140,7 @@ class FieldBase {
 			this.backPressed = 0;
 			this.won = false;
 			this.lost = false;
+			this.makeBlocks();
 			this.addRandomBlocks();
 		}
 
