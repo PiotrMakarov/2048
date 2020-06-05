@@ -20,7 +20,7 @@ class FieldBase {
 			? Object.assign(Object.assign({}, defaultParams), args)
 			: Object.assign(Object.assign({}, this.params), args);
 
-			this.params = paramsToSet;
+		this.params = paramsToSet;
 	}
 
 	makeBGField() {
@@ -121,7 +121,7 @@ class FieldBase {
 		let newElem = this.makeContainer();
 
 		this.new = [];
-		this.paused = false;
+		this.messageShownType = null;
 		this.settingsOpened = false;
 
 		if (!this.elem) { // first game

@@ -117,7 +117,7 @@ class Field extends FieldMessage {
 	}
 
 	go(direction) {
-		if (this.paused) return;
+		if (this.messageShownType) return;
 		this.newStep = [];
 
 		let delta = directionToDelta[direction];
@@ -159,8 +159,10 @@ class Field extends FieldMessage {
 	}
 
 	back() {
+		if (['lost', 'won'].includes(this.messageShownType)) {
+			this[this.messageShownType] = false;
+		}
 		this.hideMessage();
-		this.won = this.lost = false;
 		this.backPressed++;
 
 		this.lastStep.reverse();

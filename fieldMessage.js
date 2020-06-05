@@ -1,9 +1,9 @@
 'use strict';
 
 class FieldMessage extends FieldOperate {
-	sendMessage(container, {hideDelay = 0, showDelay = 0}) {
+	sendMessage(container, {hideDelay = 0, showDelay = 0, type = 'other'}) {
 		setTimeout(() => {
-			this.paused = true;
+			this.messageShownType = type;
 
 			this.message.innerHTML = '';
 			this.message.append(container);
@@ -14,7 +14,7 @@ class FieldMessage extends FieldOperate {
 	}
 
 	hideMessage() {
-		this.paused = false;
+		this.messageShownType = null;
 		this.settingsOpened = false;
 		this.message.classList.add('hidden');
 	}
@@ -48,7 +48,7 @@ class FieldMessage extends FieldOperate {
 
 		this.dialog('Game over!', '', {
 			'New game': () => this.newGame({}),
-		}, {});
+		}, {type: 'lost'});
 
 		this.lost = true;
 	}
@@ -63,13 +63,13 @@ class FieldMessage extends FieldOperate {
 		this.dialog('You win!', backMessage, {
 			'New game': () => this.newGame({}),
 			'Continue': () => {},
-		}, {});
+		}, {type: 'won'});
 
 		this.won = true;
 	}
 
 	settings() {
-		if (this.settingsOpened) {
+		if (this.messageShownType == 'settings') {
 			this.hideMessage();
 			return;
 		}
@@ -154,7 +154,6 @@ class FieldMessage extends FieldOperate {
 
 		container.append(settings, buttons);
 
-		this.sendMessage(container, {});
-		this.settingsOpened = true;
+		this.sendMessage(container, {type: 'settings'});
 	}
 }
