@@ -45,5 +45,4 @@ window.onunload = () => {
 	setJSONCookie('backPressed', field.backPressed);
 	setJSONCookie('darkTheme', field.darkTheme);
 	setJSONCookie('won', field.won);
-	setJSONCookie('lost', field.lost);
 };

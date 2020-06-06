@@ -129,7 +129,6 @@ class FieldBase {
 			this.lastStep = getJSONCookie('lastStep') || [];
 			this.backPressed = getJSONCookie('backPressed') || 0;
 			this.won = getJSONCookie('won') || false;
-			this.lost = getJSONCookie('lost') || false;
 			let oldBlocks = getJSONCookie('blocks');
 			if (oldBlocks) this.fillWithBlocks(oldBlocks);
 			else this.addRandomBlocks();
@@ -139,7 +138,6 @@ class FieldBase {
 			this.lastStep = [];
 			this.backPressed = 0;
 			this.won = false;
-			this.lost = false;
 			this.makeBlocks();
 			this.addRandomBlocks();
 		}

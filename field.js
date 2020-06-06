@@ -159,9 +159,8 @@ class Field extends FieldMessage {
 	}
 
 	back() {
-		if (['lost', 'won'].includes(this.messageShownType)) {
-			this[this.messageShownType] = false;
-		}
+		if (this.messageShownType == 'win')
+			this.won = false;
 		this.hideMessage();
 		this.backPressed++;
 
@@ -170,9 +169,8 @@ class Field extends FieldMessage {
 			if (action.type == 'add') this.delete(this.get(...action.coord), true, 'delete');
 			else if (action.type == 'move')
 				this.move(this.get(...action.new), ...action.old);
-			else if (action.type == 'merge') {
+			else if (action.type == 'merge')
 				this.unmerge(action.new, action.old);
-			}
 		}
 	}
 }

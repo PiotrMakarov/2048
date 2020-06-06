@@ -44,13 +44,9 @@ class FieldMessage extends FieldOperate {
 	}
 
 	lose() {
-		if (this.lost) return;
-
 		this.dialog('Game over!', '', {
 			'New game': () => this.newGame({}),
-		}, {type: 'lost'});
-
-		this.lost = true;
+		}, {});
 	}
 
 	win() {
@@ -63,7 +59,7 @@ class FieldMessage extends FieldOperate {
 		this.dialog('You win!', backMessage, {
 			'New game': () => this.newGame({}),
 			'Continue': () => {},
-		}, {type: 'won'});
+		}, {type: 'win'});
 
 		this.won = true;
 	}
