@@ -1,12 +1,10 @@
 'use strict';
 
 class FieldBase {
-	constructor(args, darkTheme) {
+	constructor(...args) {
 		this.elem = null;
 
-		this.setParams(args);
-
-		this.darkTheme = darkTheme;
+		this.setParams(...args);
 
 		this.size = parseFloat(getRootCssVar('size'));
 		this.spacing = parseFloat(getRootCssVar('spacing'));
@@ -15,12 +13,17 @@ class FieldBase {
 		this.messageTimeout = 1000;
 	}
 
-	setParams(args) {
-		let paramsToSet = this.params == undefined
-			? Object.assign(Object.assign({}, defaultParams), args)
-			: Object.assign(Object.assign({}, this.params), args);
-
-		this.params = paramsToSet;
+	setParams(params, appearance) {
+		this.params = applyCustomParams(
+			defaultParams,
+			this.params,
+			params
+		);
+		this.appearance = applyCustomParams(
+			defaultAppearance,
+			this.appearance,
+			appearance
+		);
 	}
 
 	makeBGField() {
@@ -113,10 +116,8 @@ class FieldBase {
 		this.blocks = empty2DArray(this.params.width, this.params.height, null);
 	}
 
-	newGame(args) {
+	newGame(...args) {
 		this.clear();
-
-		this.setParams(args);
 
 		let newElem = this.makeContainer();
 
@@ -133,6 +134,7 @@ class FieldBase {
 			if (oldBlocks) this.fillWithBlocks(oldBlocks);
 			else this.addRandomBlocks();
 		} else {
+			this.setParams(...args);
 			this.elem.replaceWith(newElem);
 			this.elem = newElem;
 			this.lastStep = [];

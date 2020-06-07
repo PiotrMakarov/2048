@@ -7,7 +7,18 @@ let directionToDelta = {
 	right: [1,  0],
 }
 
-const defaultParams = {width: 4, height: 4, startCount: 2, startPower: 1, winPower: 11}
+const defaultParams = {
+	width: 4,
+	height: 4,
+	startCount: 2,
+	startPower: 1,
+	winPower: 11
+}
+
+const defaultAppearance = {
+	darkTheme: false,
+	colors: 'grey'
+}
 
 let deltaToDirectionArr = [];
 for (let direction in directionToDelta) {
@@ -46,6 +57,11 @@ function empty2DArray(x, y, value) {
 	}
 
 	return ret;
+}
+
+function applyCustomParams(default_, current, new_) {
+	let assignTarget = current || default_;
+	return Object.assign(Object.assign({}, assignTarget), new_);
 }
 
 function createDivClass(...classNames){

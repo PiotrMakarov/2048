@@ -1,8 +1,8 @@
 'use strict';
 
 class Field extends FieldMessage {
-	constructor(params, darkTheme) {
-		super(params, darkTheme);
+	constructor(...args) {
+		super(...args);
 		this.newGame();
 		this.new = [];
 	}
