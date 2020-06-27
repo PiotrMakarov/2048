@@ -108,6 +108,10 @@ class FieldOperate extends FieldBase {
 		return ret;
 	}
 
+	get currentWidth() {
+		return width(this.params.width, this.size, this.spacing);
+	}
+
 	getCoordPixels(x, y) {
 		return [x, y].map(coord => coord * this.size + (coord + 1) * this.spacing);
 	}

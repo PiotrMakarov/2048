@@ -1,6 +1,6 @@
 'use strict';
 
-class Field extends FieldMessage {
+class Field extends FieldResize {
 	constructor(params, darkTheme) {
 		super(params, darkTheme);
 		this.newGame();

@@ -9,12 +9,12 @@ if (settings == undefined) settings = {};
 let field = new Field(settings, darkTheme);
 
 let lastCoord = null;
-document.body.addEventListener('touchstart', function (event) {
+field.field.addEventListener('touchstart', function (event) {
 	let touch = event.touches[0];
 	lastCoord = [touch.pageX, touch.pageY];
 });
 
-document.body.addEventListener('touchmove', function (event) {
+field.field.addEventListener('touchmove', function (event) {
 	if (lastCoord == null) return;
 
 	let touch = event.touches[0];
@@ -34,8 +34,12 @@ document.body.addEventListener('keydown', function (event) {
 	field.go(direction);
 });
 
+window.addEventListener('load', () => resize(field));
+window.addEventListener('resize', () => resize(field));
+
 document.fonts.ready.then(() => document.body.append(field.elem));
-window.onunload = () => {
+
+window.addEventListener('unload', () => {
 	if (field.lost) {
 		setJSONCookie('blocks', null);
 		field.lost = false;
@@ -45,4 +49,4 @@ window.onunload = () => {
 	setJSONCookie('backPressed', field.backPressed);
 	setJSONCookie('darkTheme', field.darkTheme);
 	setJSONCookie('won', field.won);
-};
+});

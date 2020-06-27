@@ -1,8 +1,16 @@
 :root {
+	--default-size: 100px;
+	--default-spacing: 13px;
+
 	--size: 100px;
-	--radius: 5px;
 	--spacing: 13px;
-	--font-size: 27px;
+	--radius: calc(var(--spacing) * .3);
+	--font-size: calc(var(--spacing) * 2);
+
+	--padding-height: calc(var(--spacing) * .3);
+	--padding-width: calc(var(--padding-height) * 2);
+	--padding: var(--padding-height) var(--padding-width);
+	--menu-elem-margin: calc(var(--padding-height) * 1.2);
 
 	--timing-function: ease;
 	--transition: .2s;
@@ -71,7 +79,7 @@ body {
 }
 
 .container > * {
-	margin: 6px 0;
+	margin: var(--menu-elem-margin) 0;
 }
 
 
@@ -85,12 +93,8 @@ body {
 }
 
 .settings > .horizontal-menu {
-	margin: 6px;
+	margin: var(--menu-elem-margin);
 	width: 100%;
-}
-
-.settings > * {
-	margin: 10px 0;
 }
 
 

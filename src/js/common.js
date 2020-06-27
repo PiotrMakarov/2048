@@ -48,6 +48,10 @@ function empty2DArray(x, y, value) {
 	return ret;
 }
 
+function width(w, size, spacing) {
+	return size * w + spacing * (w + 1);
+}
+
 function createDivClass(...classNames){
 	let elem = document.createElement('div');
 	elem.classList.add(...classNames);

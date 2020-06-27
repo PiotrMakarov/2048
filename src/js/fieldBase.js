@@ -8,11 +8,24 @@ class FieldBase {
 
 		this.darkTheme = darkTheme;
 
-		this.size = parseFloat(getRootCssVar('size'));
-		this.spacing = parseFloat(getRootCssVar('spacing'));
+		const loadFunction = parseFloat;
+		const dumpFunction = x => x + 'px';
+
+		this.bindCssVar('size', loadFunction, dumpFunction);
+		this.bindCssVar('spacing', loadFunction, dumpFunction);
+		this.defaultWidth = width(this.params.width,
+			parseFloat(getRootCssVar('default-size')),
+			parseFloat(getRootCssVar('default-spacing')));
 		this.timeout = parseFloat(getRootCssVar('transition')) * 1000;
 		this.timeoutMove = parseFloat(getRootCssVar('transition-move')) * 1000;
 		this.messageTimeout = 1000;
+	}
+
+	bindCssVar(name, loadFunction, dumpFunction) {
+		Object.defineProperty(this, name, {
+			get: () => loadFunction(getRootCssVar(name)),
+			set: value => setRootCssVar(name, dumpFunction(value))
+		})
 	}
 
 	setParams(args) {
