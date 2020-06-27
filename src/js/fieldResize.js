@@ -9,11 +9,10 @@ class FieldResize extends FieldMessage {
 	}
 
 	resize(width) {
-		const ratio = Number((width / this.currentWidth).toFixed(3));
+		const ratio = width / this.currentWidth;
 
 		for (let name of ['size', 'spacing']) {
-			this[name] *= ratio;
-			this[name] = Number(this[name].toFixed(1));
+			this[name] = Number((this[name] * ratio).toFixed(1));
 		}
 
 		this.alignBlocks();
