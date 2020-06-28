@@ -5,7 +5,6 @@ class FieldBase {
 		this.elem = null;
 
 		this.setParams(args);
-
 		this.darkTheme = darkTheme;
 
 		const loadFunction = parseFloat;
@@ -159,6 +158,8 @@ class FieldBase {
 
 		if (this.lastStep.length == 0)
 			this.backButton.classList.add('disabled');
+
+		this.adjustWindowSize();
 
 		return this.elem;
 	}
