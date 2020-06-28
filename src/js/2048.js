@@ -3,8 +3,7 @@
 let darkTheme = getJSONCookie('darkTheme') || false;
 if (darkTheme) document.body.classList.add('dark');
 
-let settings = getJSONCookie('settings');
-if (settings == undefined) settings = {};
+let settings = getJSONCookie('settings') || {};
 
 let field = new Field(settings, darkTheme);
 

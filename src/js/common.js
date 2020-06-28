@@ -7,8 +7,6 @@ let directionToDelta = {
 	right: [1,  0],
 }
 
-const defaultParams = {width: 4, height: 4, startCount: 2, startPower: 1, winPower: 11}
-
 let deltaToDirectionArr = [];
 for (let direction in directionToDelta) {
 	let pair = [directionToDelta[direction], direction];
@@ -66,7 +64,7 @@ function getJSONCookie(name) {
 }
 
 function setJSONCookie(name, value) {
-	Cookies.set(name, JSON.stringify(value), {expires: 30});
+	Cookies.set(name, JSON.stringify(value), {expires: cookieExpireTime});
 }
 
 function getRootCssVar(name) {
