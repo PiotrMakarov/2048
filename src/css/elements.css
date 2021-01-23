@@ -1,0 +1,134 @@
+/* Horizontal menu */
+
+.horizontal-menu {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.horizontal-menu.buttons {
+	justify-content: space-around;
+}
+
+
+/* Button */
+
+.button {
+	margin: 0 calc(var(--spacing) * .7);
+	font-weight: bold;
+
+	cursor: pointer;
+	user-select: none;
+}
+
+.button.disabled {
+	cursor: default;
+	filter: opacity(.6);
+}
+
+.message .button, .settings .button {
+	margin: calc(var(--spacing) * .2) calc(var(--spacing) * .5);
+	padding: var(--padding);
+
+	border-radius: var(--radius);
+	background: var(--color1);
+	color: var(--color2);
+}
+
+.message .button {
+	font-size: calc(var(--font-size) * .9);
+}
+
+
+/* Input */
+
+input {
+	border-radius: var(--radius);
+	border: none;
+	outline: none;
+	margin: 0 calc(var(--spacing) * .8);
+	padding: var(--padding);
+	width: calc(var(--font-size) + var(--padding-width));
+	background: var(--color2);
+	color: var(--color1);
+}
+
+/* Hide number input arrows */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
+
+/* Theme switcher */
+
+.theme-switcher {
+	display: none;
+}
+
+.theme-switcher + label[for="theme-switcher"] {
+	margin: 0 calc(var(--spacing) * .8);
+	cursor: pointer;
+}
+
+.theme-switcher + label[for="theme-switcher"]::before {
+	content: "Light";
+}
+
+.theme-switcher:checked + label[for="theme-switcher"]::before {
+	content: "Dark";
+}
+
+
+/* Message */
+
+.message {
+	background: var(--color2-transparent);
+	text-align: center;
+	transition: .3s;
+}
+
+.message h1 {
+	font-size: calc(var(--font-size) * 2.5);
+	margin: 0;
+}
+
+.message.hidden {
+	opacity: 0;
+	visibility: hidden;
+}
+
+
+/* Background */
+
+.field.bg {
+	display: grid;
+	grid-template-rows: repeat(var(--height), 1fr);
+	grid-template-columns: repeat(var(--width), 1fr);
+	grid-gap: var(--spacing);
+}
+
+.bg {
+	background: var(--color-field);
+}
+
+.bg .block {
+	background: var(--color-block);
+}
+
+
+/* Block */
+
+.block {
+	width: var(--size);
+	height: var(--size);
+	border-radius: var(--radius);
+	user-select: none;
+}

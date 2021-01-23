@@ -5,20 +5,7 @@ let directionToDelta = {
 	down:  [0,  1],
 	left:  [-1, 0],
 	right: [1,  0],
-}
-
-const defaultParams = {
-	width: 4,
-	height: 4,
-	startCount: 2,
-	startPower: 1,
-	winPower: 11
-}
-
-const defaultAppearance = {
-	darkTheme: false,
-	colors: 'grey'
-}
+};
 
 let deltaToDirectionArr = [];
 for (let direction in directionToDelta) {
@@ -64,6 +51,10 @@ function applyCustomParams(default_, current, new_) {
 	return Object.assign(Object.assign({}, assignTarget), new_);
 }
 
+function width(w, size, spacing) {
+	return size * w + spacing * (w + 1);
+}
+
 function createDivClass(...classNames){
 	let elem = document.createElement('div');
 	elem.classList.add(...classNames);
@@ -78,7 +69,7 @@ function getJSONCookie(name) {
 }
 
 function setJSONCookie(name, value) {
-	Cookies.set(name, JSON.stringify(value), {expires: 30});
+	Cookies.set(name, JSON.stringify(value), {expires: cookieExpireTime});
 }
 
 function getRootCssVar(name) {

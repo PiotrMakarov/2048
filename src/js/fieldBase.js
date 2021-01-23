@@ -6,8 +6,14 @@ class FieldBase {
 
 		this.setParams(...args);
 
-		this.size = parseFloat(getRootCssVar('size'));
-		this.spacing = parseFloat(getRootCssVar('spacing'));
+		const loadFunction = parseFloat;
+		const dumpFunction = x => x + 'px';
+
+		this.bindCssVar('size', loadFunction, dumpFunction);
+		this.bindCssVar('spacing', loadFunction, dumpFunction);
+		this.defaultWidth = width(this.params.width,
+			parseFloat(getRootCssVar('default-size')),
+			parseFloat(getRootCssVar('default-spacing')));
 		this.timeout = parseFloat(getRootCssVar('transition')) * 1000;
 		this.timeoutMove = parseFloat(getRootCssVar('transition-move')) * 1000;
 		this.messageTimeout = 1000;
@@ -24,6 +30,13 @@ class FieldBase {
 			this.appearance,
 			appearance
 		);
+	}
+
+	bindCssVar(name, loadFunction, dumpFunction) {
+		Object.defineProperty(this, name, {
+			get: () => loadFunction(getRootCssVar(name)),
+			set: value => setRootCssVar(name, dumpFunction(value))
+		})
 	}
 
 	makeBGField() {
@@ -119,6 +132,8 @@ class FieldBase {
 	newGame(...args) {
 		this.clear();
 
+		this.setParams(...args);
+
 		let newElem = this.makeContainer();
 
 		this.new = [];
@@ -134,7 +149,6 @@ class FieldBase {
 			if (oldBlocks) this.fillWithBlocks(oldBlocks);
 			else this.addRandomBlocks();
 		} else {
-			this.setParams(...args);
 			this.elem.replaceWith(newElem);
 			this.elem = newElem;
 			this.lastStep = [];
@@ -148,6 +162,8 @@ class FieldBase {
 
 		if (this.lastStep.length == 0)
 			this.backButton.classList.add('disabled');
+
+		this.adjustWindowSize();
 
 		return this.elem;
 	}

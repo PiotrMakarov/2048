@@ -34,8 +34,11 @@ document.body.addEventListener('keydown', function (event) {
 	field.go(direction);
 });
 
+window.addEventListener('resize', () => field.adjustWindowSize());
+
 document.fonts.ready.then(() => document.body.append(field.elem));
-window.onunload = () => {
+
+window.addEventListener('unload', () => {
 	if (field.lost) {
 		setJSONCookie('blocks', null);
 		field.lost = false;
@@ -45,4 +48,4 @@ window.onunload = () => {
 	setJSONCookie('lastStep', field.lastStep);
 	setJSONCookie('backPressed', field.backPressed);
 	setJSONCookie('won', field.won);
-};
+});

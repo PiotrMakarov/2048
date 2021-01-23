@@ -1,6 +1,6 @@
 'use strict';
 
-class FieldOperate extends FieldBase {
+class FieldOperate extends FieldResize {
 	constructor(...args) {
 		super(...args);
 		this.makeBlocks();
@@ -106,6 +106,10 @@ class FieldOperate extends FieldBase {
 		}
 
 		return ret;
+	}
+
+	get currentWidth() {
+		return width(this.params.width, this.size, this.spacing);
 	}
 
 	getCoordPixels(x, y) {
