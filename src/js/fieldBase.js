@@ -1,170 +1,170 @@
 'use strict';
 
 class FieldBase {
-	constructor(...args) {
-		this.elem = null;
+    constructor(...args) {
+        this.elem = null;
 
-		this.setParams(...args);
+        this.setParams(...args);
 
-		const loadFunction = parseFloat;
-		const dumpFunction = x => x + 'px';
+        const loadFunction = parseFloat;
+        const dumpFunction = x => x + 'px';
 
-		this.bindCssVar('size', loadFunction, dumpFunction);
-		this.bindCssVar('spacing', loadFunction, dumpFunction);
-		this.defaultWidth = width(this.params.width,
-			parseFloat(getRootCssVar('default-size')),
-			parseFloat(getRootCssVar('default-spacing')));
-		this.timeout = parseFloat(getRootCssVar('transition')) * 1000;
-		this.timeoutMove = parseFloat(getRootCssVar('transition-move')) * 1000;
-		this.messageTimeout = 1000;
-	}
+        this.bindCssVar('size', loadFunction, dumpFunction);
+        this.bindCssVar('spacing', loadFunction, dumpFunction);
+        this.defaultWidth = width(this.params.width,
+            parseFloat(getRootCssVar('default-size')),
+            parseFloat(getRootCssVar('default-spacing')));
+        this.timeout = parseFloat(getRootCssVar('transition')) * 1000;
+        this.timeoutMove = parseFloat(getRootCssVar('transition-move')) * 1000;
+        this.messageTimeout = 1000;
+    }
 
-	setParams(params, appearance) {
-		this.params = applyCustomParams(
-			defaultParams,
-			this.params,
-			params
-		);
-		this.appearance = applyCustomParams(
-			defaultAppearance,
-			this.appearance,
-			appearance
-		);
-	}
+    setParams(params, appearance) {
+        this.params = applyCustomParams(
+            defaultParams,
+            this.params,
+            params
+        );
+        this.appearance = applyCustomParams(
+            defaultAppearance,
+            this.appearance,
+            appearance
+        );
+    }
 
-	bindCssVar(name, loadFunction, dumpFunction) {
-		Object.defineProperty(this, name, {
-			get: () => loadFunction(getRootCssVar(name)),
-			set: value => setRootCssVar(name, dumpFunction(value))
-		})
-	}
+    bindCssVar(name, loadFunction, dumpFunction) {
+        Object.defineProperty(this, name, {
+            get: () => loadFunction(getRootCssVar(name)),
+            set: value => setRootCssVar(name, dumpFunction(value))
+        })
+    }
 
-	makeBGField() {
-		let field = createDivClass('field', 'bg');
+    makeBGField() {
+        let field = createDivClass('field', 'bg');
 
-		setRootCssVar('width', this.params.width);
-		setRootCssVar('height', this.params.height);
+        setRootCssVar('width', this.params.width);
+        setRootCssVar('height', this.params.height);
 
-		for (let i = 0; i < this.params.width * this.params.height; i++) {
-			let block = createDivClass('block');
-			field.append(block);
-		}
+        for (let i = 0; i < this.params.width * this.params.height; i++) {
+            let block = createDivClass('block');
+            field.append(block);
+        }
 
-		return field;
-	}
+        return field;
+    }
 
-	makeField() {
-		let field = createDivClass('field');
+    makeField() {
+        let field = createDivClass('field');
 
-		return field;
-	}
+        return field;
+    }
 
-	makeMessage() {
-		let message = createDivClass('message', 'hidden');
-		return message;
-	}
+    makeMessage() {
+        let message = createDivClass('message', 'hidden');
+        return message;
+    }
 
-	makeFieldContainer() {
-		let container = createDivClass('field-container');
+    makeFieldContainer() {
+        let container = createDivClass('field-container');
 
-		let bgField = this.makeBGField(this.params.width, this.params.height);
-		let field = this.makeField(this.params.width, this.params.height);
-		let message = this.makeMessage();
+        let bgField = this.makeBGField(this.params.width, this.params.height);
+        let field = this.makeField(this.params.width, this.params.height);
+        let message = this.makeMessage();
 
-		this.field = field;
-		this.message = message;
+        this.field = field;
+        this.message = message;
 
-		container.append(bgField);
-		container.append(field);
-		container.append(message);
+        container.append(bgField);
+        container.append(field);
+        container.append(message);
 
-		return container;
-	}
+        return container;
+    }
 
-	makeContainer() {
-		let container = createDivClass('container');
+    makeContainer() {
+        let container = createDivClass('container');
 
-		let menu = createDivClass('horizontal-menu');
-		let leftButtons = createDivClass('horizontal-menu');
-		let rightButtons = createDivClass('horizontal-menu');
+        let menu = createDivClass('horizontal-menu');
+        let leftButtons = createDivClass('horizontal-menu');
+        let rightButtons = createDivClass('horizontal-menu');
 
-		let newGameButton = createDivClass('button');
-		newGameButton.addEventListener('click', () => {
-			this.newGame({});
-		});
-		newGameButton.innerText = 'New game';
+        let newGameButton = createDivClass('button');
+        newGameButton.addEventListener('click', () => {
+            this.newGame({});
+        });
+        newGameButton.innerText = 'New game';
 
-		this.backButton = createDivClass('button');
-		this.backButton.innerText = 'Back';
-		this.backButton.addEventListener('click', () => {
-			if (this.backButton.classList.contains('disabled'))
-				return;
+        this.backButton = createDivClass('button');
+        this.backButton.innerText = 'Back';
+        this.backButton.addEventListener('click', () => {
+            if (this.backButton.classList.contains('disabled'))
+                return;
 
-			this.back();
-			this.backButton.classList.add('disabled');
-		});
+            this.back();
+            this.backButton.classList.add('disabled');
+        });
 
-		let settingsButton = createDivClass('button');
-		settingsButton.innerText = 'Settings';
-		settingsButton.addEventListener('click', () => this.settings());
+        let settingsButton = createDivClass('button');
+        settingsButton.innerText = 'Settings';
+        settingsButton.addEventListener('click', () => this.settings());
 
-		leftButtons.append(newGameButton, this.backButton);
+        leftButtons.append(newGameButton, this.backButton);
 
-		rightButtons.append(settingsButton);
+        rightButtons.append(settingsButton);
 
-		menu.append(leftButtons, rightButtons);
+        menu.append(leftButtons, rightButtons);
 
-		let fieldContainer = this.makeFieldContainer();
-		container.append(menu, fieldContainer);
+        let fieldContainer = this.makeFieldContainer();
+        container.append(menu, fieldContainer);
 
-		return container;
-	}
+        return container;
+    }
 
-	addRandomBlocks() {
-		for (let i = 0; i < this.params.startCount; i++)
-			this.addRandomBlock();
-	}
+    addRandomBlocks() {
+        for (let i = 0; i < this.params.startCount; i++)
+            this.addRandomBlock();
+    }
 
-	makeBlocks() {
-		this.blocks = empty2DArray(this.params.width, this.params.height, null);
-	}
+    makeBlocks() {
+        this.blocks = empty2DArray(this.params.width, this.params.height, null);
+    }
 
-	newGame(...args) {
-		this.clear();
+    newGame(...args) {
+        this.clear();
 
-		this.setParams(...args);
+        this.setParams(...args);
 
-		let newElem = this.makeContainer();
+        let newElem = this.makeContainer();
 
-		this.new = [];
-		this.messageShownType = null;
-		this.settingsOpened = false;
+        this.new = [];
+        this.messageShownType = null;
+        this.settingsOpened = false;
 
-		if (!this.elem) { // first game
-			this.elem = newElem;
-			this.lastStep = getJSONCookie('lastStep') || [];
-			this.backPressed = getJSONCookie('backPressed') || 0;
-			this.won = getJSONCookie('won') || false;
-			let oldBlocks = getJSONCookie('blocks');
-			if (oldBlocks) this.fillWithBlocks(oldBlocks);
-			else this.addRandomBlocks();
-		} else {
-			this.elem.replaceWith(newElem);
-			this.elem = newElem;
-			this.lastStep = [];
-			this.backPressed = 0;
-			this.won = false;
-			this.makeBlocks();
-			this.addRandomBlocks();
-		}
+        if (!this.elem) { // first game
+            this.elem = newElem;
+            this.lastStep = getJSONCookie('lastStep') || [];
+            this.backPressed = getJSONCookie('backPressed') || 0;
+            this.won = getJSONCookie('won') || false;
+            let oldBlocks = getJSONCookie('blocks');
+            if (oldBlocks) this.fillWithBlocks(oldBlocks);
+            else this.addRandomBlocks();
+        } else {
+            this.elem.replaceWith(newElem);
+            this.elem = newElem;
+            this.lastStep = [];
+            this.backPressed = 0;
+            this.won = false;
+            this.makeBlocks();
+            this.addRandomBlocks();
+        }
 
-		this.hideMessage();
+        this.hideMessage();
 
-		if (this.lastStep.length == 0)
-			this.backButton.classList.add('disabled');
+        if (this.lastStep.length == 0)
+            this.backButton.classList.add('disabled');
 
-		this.adjustWindowSize();
+        this.adjustWindowSize();
 
-		return this.elem;
-	}
+        return this.elem;
+    }
 }

@@ -1,9 +1,9 @@
 const defaultParams = {
-	width: 4,
-	height: 4,
-	startCount: 2,
-	startPower: 1,
-	winPower: 11
+    width: 4,
+    height: 4,
+    startCount: 2,
+    startPower: 1,
+    winPower: 11
 };
 
 const defaultAppearance = {
