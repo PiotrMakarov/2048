@@ -142,10 +142,10 @@ class FieldBase {
 
         if (!this.elem) { // first game
             this.elem = newElem;
-            this.lastStep = getJSONCookie('lastStep') || [];
-            this.backPressed = getJSONCookie('backPressed') || 0;
-            this.won = getJSONCookie('won') || false;
-            let oldBlocks = getJSONCookie('blocks');
+            this.lastStep = getJSONItem('lastStep') || [];
+            this.backPressed = getJSONItem('backPressed') || 0;
+            this.won = getJSONItem('won') || false;
+            let oldBlocks = getJSONItem('blocks');
             if (oldBlocks) this.fillWithBlocks(oldBlocks);
             else this.addRandomBlocks();
         } else {

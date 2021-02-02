@@ -123,7 +123,7 @@ class FieldOperate extends FieldResize {
         }
     }
 
-    makeBlocksCookie() {
+    saveBlocks() {
         let blocks = [];
         for (let i = 0; i < this.params.width; i++) {
             blocks.push([]);
@@ -132,7 +132,7 @@ class FieldOperate extends FieldResize {
                 else blocks[i].push(null);
             }
         }
-        setJSONCookie('blocks', blocks);
+        setJSONItem('blocks', blocks);
     }
 
     move(block, x, y, write = false, logical = true) {

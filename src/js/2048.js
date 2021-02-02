@@ -1,10 +1,10 @@
 'use strict';
 
-let appearance = getJSONCookie('appearance') || {};
+let appearance = getJSONItem('appearance') || {};
 if (appearance.darkTheme)
     document.body.classList.add('dark');
 
-let settings = getJSONCookie('settings') || {};
+let settings = getJSONItem('settings') || {};
 
 let field = new Field(settings, appearance);
 
@@ -40,12 +40,12 @@ document.fonts.ready.then(() => document.body.append(field.elem));
 
 window.addEventListener('unload', () => {
     if (field.lost) {
-        setJSONCookie('blocks', null);
+        setJSONItem('blocks', null);
         field.lost = false;
-    } else field.makeBlocksCookie();
-    setJSONCookie('settings', field.params);
-    setJSONCookie('appearance', field.appearance);
-    setJSONCookie('lastStep', field.lastStep);
-    setJSONCookie('backPressed', field.backPressed);
-    setJSONCookie('won', field.won);
+    } else field.saveBlocks();
+    setJSONItem('settings', field.params);
+    setJSONItem('appearance', field.appearance);
+    setJSONItem('lastStep', field.lastStep);
+    setJSONItem('backPressed', field.backPressed);
+    setJSONItem('won', field.won);
 });

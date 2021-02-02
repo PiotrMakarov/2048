@@ -61,15 +61,16 @@ function createDivClass(...classNames){
     return elem;
 }
 
-function getJSONCookie(name) {
-    let ret = Cookies.get(name);
-    if (ret != undefined) {
+function getJSONItem(name) {
+    let ret = localStorage.getItem(name);
+    if (ret != null) {
         return JSON.parse(ret);
     }
+    return null;
 }
 
-function setJSONCookie(name, value) {
-    Cookies.set(name, JSON.stringify(value), {expires: cookieExpireTime});
+function setJSONItem(name, value) {
+    localStorage.setItem(name, JSON.stringify(value));
 }
 
 function getRootCssVar(name) {
