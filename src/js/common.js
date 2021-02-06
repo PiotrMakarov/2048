@@ -51,8 +51,8 @@ function applyCustomParams(default_, current, new_) {
     return Object.assign(Object.assign({}, assignTarget), new_);
 }
 
-function width(w, size, spacing) {
-    return size * w + spacing * (w + 1);
+function fieldSize(size, cellSize, spacing) {
+    return size * cellSize + spacing * (size + 1);
 }
 
 function createDivClass(...classNames){

@@ -5,15 +5,13 @@ class FieldBase {
         this.elem = null;
 
         this.setParams(...args);
+        this.setDefaultFieldSizes();
 
         const loadFunction = parseFloat;
         const dumpFunction = x => x + 'px';
 
         this.bindCssVar('size', loadFunction, dumpFunction);
         this.bindCssVar('spacing', loadFunction, dumpFunction);
-        this.defaultWidth = width(this.params.width,
-            parseFloat(getRootCssVar('default-size')),
-            parseFloat(getRootCssVar('default-spacing')));
         this.timeout = parseFloat(getRootCssVar('transition')) * 1000;
         this.timeoutMove = parseFloat(getRootCssVar('transition-move')) * 1000;
         this.messageTimeout = 1000;
@@ -30,6 +28,15 @@ class FieldBase {
             this.appearance,
             appearance
         );
+    }
+
+    setDefaultFieldSizes() {
+        this.defaultFieldSizes = {};
+        for (let direction of ['height', 'width']) {
+            this.defaultFieldSizes[direction] = fieldSize(this.params[direction],
+            parseFloat(getRootCssVar('default-size')),
+            parseFloat(getRootCssVar('default-spacing')));
+        }
     }
 
     bindCssVar(name, loadFunction, dumpFunction) {
@@ -84,7 +91,7 @@ class FieldBase {
     makeContainer() {
         let container = createDivClass('container');
 
-        let menu = createDivClass('horizontal-menu');
+        this.menu = createDivClass('horizontal-menu');
         let leftButtons = createDivClass('horizontal-menu');
         let rightButtons = createDivClass('horizontal-menu');
 
@@ -112,10 +119,10 @@ class FieldBase {
 
         rightButtons.append(settingsButton);
 
-        menu.append(leftButtons, rightButtons);
+        this.menu.append(leftButtons, rightButtons);
 
         let fieldContainer = this.makeFieldContainer();
-        container.append(menu, fieldContainer);
+        container.append(this.menu, fieldContainer);
 
         return container;
     }
@@ -133,6 +140,7 @@ class FieldBase {
         this.clear();
 
         this.setParams(...args);
+        this.setDefaultFieldSizes();
 
         let newElem = this.makeContainer();
 
@@ -163,7 +171,7 @@ class FieldBase {
         if (this.lastStep.length == 0)
             this.backButton.classList.add('disabled');
 
-        this.adjustWindowSize();
+        setTimeout(() => this.adjustWindowSize(), 0);
 
         return this.elem;
     }

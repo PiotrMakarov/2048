@@ -13,8 +13,8 @@ class FieldResize extends FieldBase {
         }
     }
 
-    resize(width) {
-        const ratio = width / this.currentWidth;
+    resize(newFieldSize, direction) {
+        const ratio = newFieldSize / this.currentFieldSize(direction);
 
         for (let name of ['size', 'spacing']) {
             this[name] = _.round(this[name] * ratio, 1);
@@ -23,17 +23,52 @@ class FieldResize extends FieldBase {
         this.alignBlocks();
     }
 
-    adjustWindowSize() {
-        const padding = 15;
-        const minWindowWidth = this.defaultWidth + padding;
-        const isResize = window.innerWidth <= minWindowWidth;
+    getWidthByHeight(height) {
+        const ratio = this.defaultFieldSizes.width
+            / this.defaultFieldSizes.height;
 
-        if (isResize) {
-            this.resize(window.innerWidth - padding);
-        } else if (this.lastIsResize != isResize) {
-            this.resize(field.defaultWidth);
+        return ratio * height;
+    }
+
+    adjustWindowSize(second) {
+        if (!second) this.adjustWindowSize(true); // a bit stupid
+
+        const paddingRatio = .06;
+        // Differencies between window and field (with buttons) sizes
+        const diffs = {
+            width: window.innerWidth * paddingRatio,
+            height: window.innerHeight * paddingRatio
+                + this.menu.offsetHeight,
+        };
+
+        let dir;
+        let minWidth = Infinity;
+        let newFieldSize;
+        for (let direction in diffs) {
+            const windowSize = window['inner' + _.capitalize(direction)];
+            const currentNewFieldSize = windowSize - diffs[direction];
+
+            let width;
+            if (direction == 'width') {
+                width = currentNewFieldSize;
+            } else {
+                width = this.getWidthByHeight(currentNewFieldSize);
+            }
+
+            if (width < minWidth) {
+                minWidth = width;
+                newFieldSize = currentNewFieldSize;
+                dir = direction;
+            }
         }
 
+        const isResize = newFieldSize <= this.defaultFieldSizes[dir];
+        if (isResize) {
+            this.resize(newFieldSize, dir);
+        }
+        else if (this.lastIsResize) {
+            this.resize(this.defaultFieldSizes[dir], dir);
+        }
         this.lastIsResize = isResize;
     }
 }

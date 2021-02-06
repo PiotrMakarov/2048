@@ -108,8 +108,8 @@ class FieldOperate extends FieldResize {
         return ret;
     }
 
-    get currentWidth() {
-        return width(this.params.width, this.size, this.spacing);
+    currentFieldSize(direction) {
+        return fieldSize(this.params[direction], this.size, this.spacing);
     }
 
     getCoordPixels(x, y) {
