@@ -43,9 +43,5 @@ window.addEventListener('unload', () => {
         setJSONItem('blocks', null);
         field.lost = false;
     } else field.saveBlocks();
-    setJSONItem('settings', field.params);
-    setJSONItem('appearance', field.appearance);
-    setJSONItem('lastStep', field.lastStep);
-    setJSONItem('backPressed', field.backPressed);
-    setJSONItem('won', field.won);
+    field.saveMeta();
 });
