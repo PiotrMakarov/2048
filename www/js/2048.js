@@ -1,5 +1,6 @@
 'use strict';
 
+
 let appearance = getJSONItem('appearance') || {};
 if (appearance.darkTheme)
     document.body.classList.add('dark');
@@ -7,6 +8,15 @@ if (appearance.darkTheme)
 let settings = getJSONItem('settings') || {};
 
 let field = new Field(settings, appearance);
+
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    window.screen.orientation.lock('portrait');
+
+    StatusBar.overlaysWebView(true);
+    // StatusBar.styleDefault();
+    field.setMenuBarTheme();
+}
 
 let lastCoord = null;
 document.body.addEventListener('touchstart', function (event) {

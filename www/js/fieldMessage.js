@@ -14,6 +14,10 @@ class FieldMessage extends FieldOperate {
     }
 
     hideMessage() {
+        if (this.messageShownType == 'settings') {
+            this.saveMeta();
+        }
+
         this.messageShownType = null;
         this.settingsOpened = false;
         this.message.classList.add('hidden');
@@ -62,6 +66,14 @@ class FieldMessage extends FieldOperate {
         }, {type: 'win'});
 
         this.won = true;
+    }
+
+    setMenuBarTheme() {
+        if (this.appearance.darkTheme) {
+            StatusBar.styleBlackOpaque();
+        } else {
+            StatusBar.styleDefault();
+        }
     }
 
     settings() {
@@ -116,8 +128,12 @@ class FieldMessage extends FieldOperate {
         settings.darkTheme.checked = this.appearance.darkTheme;
         settings.darkTheme.addEventListener('click', () => {
             this.appearance.darkTheme = settings.darkTheme.checked;
-            if (this.appearance.darkTheme) document.body.classList.add('dark');
-            else document.body.classList.remove('dark');
+            if (this.appearance.darkTheme) {
+                document.body.classList.add('dark');
+            } else {
+                document.body.classList.remove('dark');
+            }
+            this.setMenuBarTheme();
         });
 
         let buttons = createDivClass('horizontal-menu', 'buttons');
@@ -132,6 +148,8 @@ class FieldMessage extends FieldOperate {
 
             if (_.isEqual(this.params, newParams)) this.hideMessage();
             else this.newGame(newParams);
+
+            this.saveMeta();
         });
 
         let defaultsButton = createDivClass('button');

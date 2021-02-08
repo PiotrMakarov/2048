@@ -145,6 +145,8 @@ class Field extends FieldMessage {
             if (!this.check()) this.lose();
             this.lastStep = this.newStep;
         }
+
+        this.saveBlocks();
     }
 
     unmerge(a, b) {
