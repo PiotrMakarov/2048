@@ -6,11 +6,6 @@
     align-items: center;
 }
 
-.horizontal-menu.buttons {
-    justify-content: space-around;
-}
-
-
 /* Button */
 
 .button {
@@ -19,6 +14,10 @@
 
     cursor: pointer;
     user-select: none;
+}
+
+.horizontal-menu.buttons .button {
+    width: 100%;
 }
 
 .button.disabled {

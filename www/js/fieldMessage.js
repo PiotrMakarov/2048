@@ -29,8 +29,12 @@ class FieldMessage extends FieldOperate {
         let header = document.createElement('h1');
         header.innerText = headerText;
         container.append(header);
-        if (text)
-            container.append(document.createTextNode(text));
+        if (text) {
+            let textElem = document.createElement('div');
+            textElem.innerText = text;
+            textElem.style.marginBottom = 'calc(var(--spacing) * .5)';
+            container.append(textElem);
+        }
 
         let buttons = createDivClass('horizontal-menu', 'buttons');
 
@@ -57,8 +61,8 @@ class FieldMessage extends FieldOperate {
         if (this.won) return;
 
         let backMessage = this.backPressed == 0
-            ? 'You never pressed Back!'
-            : `You pressed back ${this.backPressed} times`;
+            ? `You've never pressed Back`
+            : `You've pressed Back ${this.backPressed} times`;
 
         this.dialog('You win!', backMessage, {
             'New game': () => this.newGame({}),
@@ -99,9 +103,9 @@ class FieldMessage extends FieldOperate {
 `;
 
         let namesToText = {
-            startPower: 'Start power',
-            winPower: 'Win power',
-            startCount: 'Tiles count at start',
+            // startPower: 'Start power',
+            // winPower: 'Win power',
+            // startCount: 'Tiles count at start',
         };
 
         let names = ['width', 'height'];
@@ -146,25 +150,26 @@ class FieldMessage extends FieldOperate {
                 newParams[name] = +settings[name].value;
             }
 
-            if (_.isEqual(this.params, newParams)) this.hideMessage();
-            else this.newGame(newParams);
+            if (_.isEqual(_.pick(this.params, 'width', 'height'), newParams)) {
+                this.hideMessage();
+            } else this.newGame(newParams);
 
             this.saveMeta();
         });
 
-        let defaultsButton = createDivClass('button');
-        defaultsButton.innerText = 'Set defaults';
-        defaultsButton.addEventListener('click', () => {
-            for (let name of names) {
-                settings[name].value = defaultParams[name];
-            }
-        });
+        // let defaultsButton = createDivClass('button');
+        // defaultsButton.innerText = 'Set defaults';
+        // defaultsButton.addEventListener('click', () => {
+        //     for (let name of names) {
+        //         settings[name].value = defaultParams[name];
+        //     }
+        // });
 
         let closeButton = createDivClass('button');
         closeButton.innerText = 'Close';
         closeButton.addEventListener('click', () => this.hideMessage());
 
-        buttons.append(saveButton, defaultsButton, closeButton);
+        buttons.append(saveButton, /*defaultsButton,*/ closeButton);
 
         container.append(settings, buttons);
 
