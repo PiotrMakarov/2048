@@ -12,6 +12,7 @@ class FieldBase {
 
         this.bindCssVar('size', loadFunction, dumpFunction);
         this.bindCssVar('spacing', loadFunction, dumpFunction);
+        this.bindCssVar('default-spacing', loadFunction, dumpFunction);
         this.timeout = parseFloat(getRootCssVar('transition')) * 1000;
         this.timeoutMove = parseFloat(getRootCssVar('transition-move')) * 1000;
         this.messageTimeout = 1000;

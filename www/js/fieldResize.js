@@ -2,6 +2,7 @@ class FieldResize extends FieldBase {
     constructor(...args) {
         super(...args);
         this.lastIsResize = false;
+        this.defaultValuesSet = false;
     }
 
     alignBlocks() {
@@ -16,7 +17,13 @@ class FieldResize extends FieldBase {
     resize(newFieldSize, direction) {
         const ratio = newFieldSize / this.currentFieldSize(direction);
 
-        for (let name of ['size', 'spacing']) {
+        const names = ['size', 'spacing'];
+
+        if (!this.defaultValuesSet) {
+            this.defaultValuesSet = true;
+            names.push('default-spacing');
+        }
+        for (let name of names) {
             this[name] = _.round(this[name] * ratio, 1);
         }
 

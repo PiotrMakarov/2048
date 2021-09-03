@@ -14,7 +14,7 @@
 /* Button */
 
 .button {
-    margin: 0 calc(var(--spacing) * .7);
+    margin: 0 calc(var(--default-spacing) * .7);
     font-weight: bold;
 
     cursor: pointer;
@@ -27,10 +27,10 @@
 }
 
 .message .button, .settings .button {
-    margin: calc(var(--spacing) * .2) calc(var(--spacing) * .5);
+    margin: calc(var(--default-spacing) * .2) calc(var(--default-spacing) * .5);
     padding: var(--padding);
 
-    border-radius: var(--radius);
+    border-radius: var(--default-radius);
     background: var(--color1);
     color: var(--color2);
 }
@@ -43,10 +43,10 @@
 /* Input */
 
 input {
-    border-radius: var(--radius);
+    border-radius: var(--default-radius);
     border: none;
     outline: none;
-    margin: 0 calc(var(--spacing) * .8);
+    margin: 0 calc(var(--default-spacing) * .8);
     padding: var(--padding);
     width: calc(var(--font-size) + var(--padding-width));
     background: var(--color2);
@@ -74,7 +74,7 @@ input[type=number] {
 }
 
 .theme-switcher + label[for="theme-switcher"] {
-    margin: 0 calc(var(--spacing) * .8);
+    margin: 0 calc(var(--default-spacing) * .8);
     cursor: pointer;
 }
 
@@ -103,6 +103,10 @@ input[type=number] {
 .message.hidden {
     opacity: 0;
     visibility: hidden;
+}
+
+.message-container {
+    min-width: calc(var(--spacing) * 23);
 }
 
 
