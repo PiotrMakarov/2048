@@ -137,10 +137,19 @@ class FieldBase {
         this.blocks = empty2DArray(this.params.width, this.params.height, null);
     }
 
-    newGame(...args) {
+    newGame(args, dialog = true) {
+        if (dialog) {
+            this.dialog('Start new game?', false, {
+                'Yes': () => this.newGameBody(args),
+                'No': () => {},
+            }, {}, .8)
+        } else this.newGameBody(args);
+    }
+
+    newGameBody(args) {
         this.clear();
 
-        this.setParams(...args);
+        this.setParams(args);
         this.setDefaultFieldSizes();
 
         let newElem = this.makeContainer();

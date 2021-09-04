@@ -6,6 +6,14 @@
     align-items: center;
 }
 
+.message .horizontal-menu {
+    margin-top: calc(var(--spacing) * .5);
+}
+
+.settings + .horizontal-menu {
+    margin-top: 0px;
+}
+
 /* Button */
 
 .button {

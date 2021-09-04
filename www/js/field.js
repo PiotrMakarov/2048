@@ -3,7 +3,7 @@
 class Field extends FieldMessage {
     constructor(...args) {
         super(...args);
-        this.newGame();
+        this.newGame({}, false);
         this.new = [];
     }
 

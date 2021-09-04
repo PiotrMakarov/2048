@@ -1,7 +1,11 @@
 'use strict';
 
 class FieldMessage extends FieldOperate {
-    sendMessage(container, {hideDelay = 0, showDelay = 0, type = 'other'}) {
+    sendMessage(container, {
+        hideDelay = 0,
+        showDelay = 0,
+        type = 'other'
+    }) {
         setTimeout(() => {
             this.messageShownType = type;
 
@@ -23,16 +27,16 @@ class FieldMessage extends FieldOperate {
         this.message.classList.add('hidden');
     }
 
-    dialog(headerText, text, buttonsFuncs, kwargs) {
+    dialog(headerText, text, buttonsFuncs, kwargs, textSizeCoeff = 1) {
         let container = createDivClass('message-container');
 
         let header = document.createElement('h1');
         header.innerText = headerText;
+        header.style.fontSize = `calc(var(--font-size) * 2.5 * ${textSizeCoeff}`;
         container.append(header);
         if (text) {
             let textElem = document.createElement('div');
             textElem.innerText = text;
-            textElem.style.marginBottom = 'calc(var(--spacing) * .5)';
             container.append(textElem);
         }
 
