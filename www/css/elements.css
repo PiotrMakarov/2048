@@ -113,7 +113,7 @@ input[type=number] {
 }
 
 .message-container {
-    min-width: calc(var(--spacing) * 23);
+    min-width: calc(var(--default-spacing) * 23);
 }
 
 
