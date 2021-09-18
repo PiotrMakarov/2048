@@ -10,6 +10,9 @@ class FieldBase {
         const loadFunction = parseFloat;
         const dumpFunction = x => x + 'px';
 
+        for (let name of ['backPressed', 'won', 'lost']) {
+            this.bindJSONItem(name);
+        }
         this.bindCssVar('size', loadFunction, dumpFunction);
         this.bindCssVar('spacing', loadFunction, dumpFunction);
         this.bindCssVar('default-spacing', loadFunction, dumpFunction);
@@ -18,14 +21,14 @@ class FieldBase {
         this.messageTimeout = 1000;
     }
 
-    set backAvailable(val) {
-        if (val) {
+    set backAvailable(value) {
+        if (value) {
             this.backButton.classList.remove('disabled');
         } else {
             this.backButton.classList.add('disabled');
         }
 
-        setJSONItem('backAvailable', val)
+        setJSONItem('backAvailable', value)
     }
 
     get backAvailable() {
@@ -58,6 +61,18 @@ class FieldBase {
         Object.defineProperty(this, name, {
             get: () => loadFunction(getRootCssVar(name)),
             set: value => setRootCssVar(name, dumpFunction(value))
+        })
+    }
+
+    bindJSONItem(name) {
+        Object.defineProperty(this, name, {
+            set(value) {
+                this['_' + name] = value;
+                setJSONItem(name, value);
+            },
+            get() {
+                return this['_' + name];
+            }
         })
     }
 
@@ -139,6 +154,8 @@ class FieldBase {
     addRandomBlocks() {
         for (let i = 0; i < this.params.startCount; i++)
             this.addRandomBlock();
+
+        this.saveBlocks();
     }
 
     makeBlocks() {
@@ -150,7 +167,7 @@ class FieldBase {
             this.dialog('Start new game?', false, {
                 'Yes': () => this.newGameBody(args),
                 'No': () => {},
-            }, {}, .8)
+            }, {}, .8);
         } else this.newGameBody(args);
     }
 
@@ -172,6 +189,8 @@ class FieldBase {
             this.backPressed = getJSONItem('backPressed') || 0;
             this.backAvailable = getJSONItem('backAvailable') || false;
             this.won = getJSONItem('won') || false;
+            this.lost = getJSONItem('lost') || false;
+            if (this.lost) this.lose();
             let oldBlocks = getJSONItem('blocks');
             if (oldBlocks) this.fillWithBlocks(oldBlocks);
             else this.addRandomBlocks();
@@ -179,8 +198,10 @@ class FieldBase {
             this.elem.replaceWith(newElem);
             this.elem = newElem;
             this.lastStep = [];
+            setJSONItem('lastStep', []);
             this.backPressed = 0;
             this.won = false;
+            this.lost = false;
             this.makeBlocks();
             this.addRandomBlocks();
         }

@@ -46,11 +46,3 @@ document.body.addEventListener('keydown', function (event) {
 window.addEventListener('resize', () => field.adjustWindowSize());
 
 document.fonts.ready.then(() => document.body.append(field.elem));
-
-window.addEventListener('unload', () => {
-    if (field.lost) {
-        setJSONItem('blocks', null);
-        field.lost = false;
-    } else field.saveBlocks();
-    field.saveMeta();
-});

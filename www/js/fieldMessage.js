@@ -18,10 +18,6 @@ class FieldMessage extends FieldOperate {
     }
 
     hideMessage() {
-        if (this.messageShownType == 'settings') {
-            this.saveMeta();
-        }
-
         this.messageShownType = null;
         this.settingsOpened = false;
         this.message.classList.add('hidden');
@@ -136,6 +132,7 @@ class FieldMessage extends FieldOperate {
         settings.darkTheme.checked = this.appearance.darkTheme;
         settings.darkTheme.addEventListener('click', () => {
             this.appearance.darkTheme = settings.darkTheme.checked;
+            setJSONItem('appearance', this.appearance);
             if (this.appearance.darkTheme) {
                 document.body.classList.add('dark');
             } else {
@@ -156,9 +153,10 @@ class FieldMessage extends FieldOperate {
 
             if (_.isEqual(_.pick(this.params, 'width', 'height'), newParams)) {
                 this.hideMessage();
-            } else this.newGame(newParams);
-
-            this.saveMeta();
+            } else {
+                setJSONItem('settings', newParams);
+                this.newGame(newParams)
+            };
         });
 
         // let defaultsButton = createDivClass('button');

@@ -142,8 +142,12 @@ class Field extends FieldMessage {
         if (changed) {
             this.backAvailable = true;
             this.addRandomBlock(true);
-            if (!this.check()) this.lose();
+            if (!this.check()) {
+                this.lost = true;
+                this.lose();
+            }
             this.lastStep = this.newStep;
+            setJSONItem('lastStep', this.lastStep);
         }
 
         this.saveBlocks();
@@ -163,6 +167,8 @@ class Field extends FieldMessage {
     back() {
         if (!this.backAvailable)
             return;
+
+        this.lost = false;
 
         if (this.messageShownType == 'win')
             this.won = false;

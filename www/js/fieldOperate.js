@@ -135,15 +135,6 @@ class FieldOperate extends FieldResize {
         setJSONItem('blocks', blocks);
     }
 
-    saveMeta() {
-        setJSONItem('settings', this.params);
-        setJSONItem('appearance', this.appearance);
-        setJSONItem('lastStep', this.lastStep);
-        setJSONItem('backPressed', this.backPressed);
-        setJSONItem('backAvailable', this.backAvailable);
-        setJSONItem('won', this.won);
-    }
-
     move(block, x, y, write = false, logical = true) {
         let old;
         if (logical) {
