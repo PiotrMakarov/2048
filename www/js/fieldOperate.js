@@ -136,11 +136,12 @@ class FieldOperate extends FieldResize {
     }
 
     saveMeta() {
-        setJSONItem('settings', field.params);
-        setJSONItem('appearance', field.appearance);
-        setJSONItem('lastStep', field.lastStep);
-        setJSONItem('backPressed', field.backPressed);
-        setJSONItem('won', field.won);
+        setJSONItem('settings', this.params);
+        setJSONItem('appearance', this.appearance);
+        setJSONItem('lastStep', this.lastStep);
+        setJSONItem('backPressed', this.backPressed);
+        setJSONItem('backAvailable', this.backAvailable);
+        setJSONItem('won', this.won);
     }
 
     move(block, x, y, write = false, logical = true) {

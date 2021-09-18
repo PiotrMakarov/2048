@@ -1,6 +1,5 @@
 'use strict';
 
-
 let appearance = getJSONItem('appearance') || {};
 if (appearance.darkTheme)
     document.body.classList.add('dark');

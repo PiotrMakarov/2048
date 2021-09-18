@@ -18,6 +18,20 @@ class FieldBase {
         this.messageTimeout = 1000;
     }
 
+    set backAvailable(val) {
+        if (val) {
+            this.backButton.classList.remove('disabled');
+        } else {
+            this.backButton.classList.add('disabled');
+        }
+
+        setJSONItem('backAvailable', val)
+    }
+
+    get backAvailable() {
+        return !this.backButton.classList.contains('disabled');
+    }
+
     setParams(params, appearance) {
         this.params = applyCustomParams(
             defaultParams,
@@ -104,13 +118,7 @@ class FieldBase {
 
         this.backButton = createDivClass('button');
         this.backButton.innerText = 'Back';
-        this.backButton.addEventListener('click', () => {
-            if (this.backButton.classList.contains('disabled'))
-                return;
-
-            this.back();
-            this.backButton.classList.add('disabled');
-        });
+        this.backButton.addEventListener('click', () => this.back());
 
         let settingsButton = createDivClass('button');
         settingsButton.innerText = 'Settings';
@@ -162,6 +170,7 @@ class FieldBase {
             this.elem = newElem;
             this.lastStep = getJSONItem('lastStep') || [];
             this.backPressed = getJSONItem('backPressed') || 0;
+            this.backAvailable = getJSONItem('backAvailable') || false;
             this.won = getJSONItem('won') || false;
             let oldBlocks = getJSONItem('blocks');
             if (oldBlocks) this.fillWithBlocks(oldBlocks);
@@ -179,7 +188,7 @@ class FieldBase {
         this.hideMessage();
 
         if (this.lastStep.length == 0)
-            this.backButton.classList.add('disabled');
+            this.backAvailable = false;
 
         setTimeout(() => this.adjustWindowSize(), 0);
 

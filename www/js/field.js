@@ -140,7 +140,7 @@ class Field extends FieldMessage {
         this.new = [];
 
         if (changed) {
-            this.backButton.classList.remove('disabled');
+            this.backAvailable = true;
             this.addRandomBlock(true);
             if (!this.check()) this.lose();
             this.lastStep = this.newStep;
@@ -161,6 +161,9 @@ class Field extends FieldMessage {
     }
 
     back() {
+        if (!this.backAvailable)
+            return;
+
         if (this.messageShownType == 'win')
             this.won = false;
         this.hideMessage();
@@ -174,5 +177,8 @@ class Field extends FieldMessage {
             else if (action.type == 'merge')
                 this.unmerge(action.new, action.old);
         }
+
+        this.saveBlocks();
+        this.backAvailable = false;
     }
 }
