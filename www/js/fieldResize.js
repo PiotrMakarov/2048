@@ -3,6 +3,10 @@ class FieldResize extends FieldBase {
         super(...args);
         this.lastIsResize = false;
         this.defaultValuesSet = false;
+        this.default4x4FieldWidth = fieldSize(4,
+            parseInt(getRootCssVar('default-size')),
+            parseInt(getRootCssVar('default-spacing'))
+        );
     }
 
     alignBlocks() {
@@ -21,9 +25,14 @@ class FieldResize extends FieldBase {
 
         if (!this.defaultValuesSet) {
             this.defaultValuesSet = true;
-            names.push('default-spacing');
+            setRootCssVar('default-spacing', '2.6vw');
+        } else if (newFieldSize >= this.default4x4FieldWidth) {
+            setRootCssVar('default-spacing', '13px');
+            this.defaultValuesSet = false;
         }
+
         for (let name of names) {
+            // maybe it's better not to round
             this[name] = _.round(this[name] * ratio, 1);
         }
 
@@ -73,7 +82,7 @@ class FieldResize extends FieldBase {
         if (isResize) {
             this.resize(newFieldSize, dir);
         }
-        else if (this.lastIsResize) {
+        else if (this.lastIsResize) { // return to default size
             this.resize(this.defaultFieldSizes[dir], dir);
         }
         this.lastIsResize = isResize;
