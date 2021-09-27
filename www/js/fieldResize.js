@@ -2,6 +2,7 @@ class FieldResize extends FieldBase {
     constructor(...args) {
         super(...args);
         this.lastIsResize = false;
+        this.lastIsTextAbsolute = null;
         this.defaultValuesSet = false;
         this.default4x4FieldWidth = fieldSize(4,
             parseInt(getRootCssVar('default-size')),
@@ -23,18 +24,20 @@ class FieldResize extends FieldBase {
 
         const names = ['size', 'spacing'];
 
-        if (!this.defaultValuesSet) {
-            this.defaultValuesSet = true;
-            setRootCssVar('default-spacing', '2.6vw');
-        } else if (newFieldSize >= this.default4x4FieldWidth) {
-            setRootCssVar('default-spacing', '13px');
-            this.defaultValuesSet = false;
-        }
-
         for (let name of names) {
             // maybe it's better not to round
             this[name] = _.round(this[name] * ratio, 1);
         }
+
+        const isTextAbsolute = newFieldSize >= this.default4x4FieldWidth;
+        if (isTextAbsolute != this.lastIsTextAbsolute) {
+            if (isTextAbsolute) {
+                setRootCssVar('default-spacing', '13px');
+            } else {
+                setRootCssVar('default-spacing', '2.6vw');
+            }
+        }
+        this.lastIsTextAbsolute = isTextAbsolute;
 
         this.alignBlocks();
     }
@@ -46,9 +49,7 @@ class FieldResize extends FieldBase {
         return ratio * height;
     }
 
-    adjustWindowSize(second) {
-        if (!second) this.adjustWindowSize(true); // a bit stupid
-
+    adjustWindowSize() {
         const paddingRatio = .06;
         // Differencies between window and field (with buttons) sizes
         const diffs = {
