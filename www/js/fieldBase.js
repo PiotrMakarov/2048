@@ -181,7 +181,6 @@ class FieldBase {
 
         this.new = [];
         this.messageShownType = null;
-        this.settingsOpened = false;
 
         if (!this.elem) { // first game
             this.elem = newElem;

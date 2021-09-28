@@ -19,7 +19,6 @@ class FieldMessage extends FieldOperate {
 
     hideMessage() {
         this.messageShownType = null;
-        this.settingsOpened = false;
         this.message.classList.add('hidden');
     }
 
@@ -102,6 +101,15 @@ class FieldMessage extends FieldOperate {
 </div>
 `;
 
+        // Restrict the input of field size to be maximum 2 digits
+        for (let el of settings.querySelectorAll('input')) {
+            el.addEventListener('input', event => {
+                if (event.target.value.length > 2) {
+                    event.target.value = event.target.value.slice(0, 2);
+                }
+            })
+        }
+
         let namesToText = {
             // startPower: 'Start power',
             // winPower: 'Win power',
@@ -146,6 +154,17 @@ class FieldMessage extends FieldOperate {
         let saveButton = createDivClass('button');
         saveButton.innerText = 'Save';
         saveButton.addEventListener('click', () => {
+            const s = settings.width.value * settings.height.value;
+            let msg = '';
+            if (s < 0) msg = 'Field is too small';
+            else if (s > 900) msg = 'Field is too big';
+            if (msg) {
+                this.dialog(msg, false, {
+                    'Ok': () => this.settings(),
+                }, {}, .7)
+                return;
+            }
+
             let newParams = {};
             for (let name of names) {
                 newParams[name] = +settings[name].value;
