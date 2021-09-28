@@ -52,7 +52,7 @@ class FieldMessage extends FieldOperate {
 
     lose() {
         this.dialog('Game over!', '', {
-            'New game': () => this.newGame({}),
+            'New game': () => this.newGame({}, false),
         }, {});
     }
 
@@ -156,7 +156,7 @@ class FieldMessage extends FieldOperate {
         saveButton.addEventListener('click', () => {
             const s = settings.width.value * settings.height.value;
             let msg = '';
-            if (s < 0) msg = 'Field is too small';
+            if (s < 3) msg = 'Field is too small';
             else if (s > 900) msg = 'Field is too big';
             if (msg) {
                 this.dialog(msg, false, {
