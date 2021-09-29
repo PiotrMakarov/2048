@@ -4,6 +4,7 @@
     <description>
         2048 game
     </description>
+    <icon src="res/icon.png" />
     <author email="piotr.makarov@gmail.com" href="http://example.com">
         Petr Makarov
     </author>
