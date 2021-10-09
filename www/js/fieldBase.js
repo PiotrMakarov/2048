@@ -15,7 +15,6 @@ class FieldBase {
         }
         this.bindCssVar('size', loadFunction, dumpFunction);
         this.bindCssVar('spacing', loadFunction, dumpFunction);
-        this.bindCssVar('default-spacing', loadFunction, dumpFunction);
         this.timeout = parseFloat(getRootCssVar('transition')) * 1000;
         this.timeoutMove = parseFloat(getRootCssVar('transition-move')) * 1000;
         this.messageTimeout = 1000;
@@ -181,6 +180,7 @@ class FieldBase {
 
         this.new = [];
         this.messageShownType = null;
+        this.lastIsTextAbsolute = null;
 
         if (!this.elem) { // first game
             this.elem = newElem;
@@ -210,7 +210,9 @@ class FieldBase {
         if (this.lastStep.length == 0)
             this.backAvailable = false;
 
-        setTimeout(() => this.adjustWindowSize(), 0);
+        setTimeout(() => {
+            this.adjustWindowSize();
+        }, 0);
 
         return this.elem;
     }

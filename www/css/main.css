@@ -1,15 +1,17 @@
 :root {
+    --interface-spacing: 13px;
+
     --default-size: 100px;
     --default-spacing: 13px;
 
     --size: 100px;
     --spacing: 13px;
     --radius: calc(var(--spacing) * .3);
-    --default-radius: calc(var(--default-spacing) * .3);
+    --default-radius: calc(var(--interface-spacing) * .3);
     --field-font-size: calc(var(--spacing) * 2.7);
-    --font-size: calc(var(--default-spacing) * 2);
+    --font-size: calc(var(--interface-spacing) * 2);
 
-    --padding-height: calc(var(--default-spacing) * .3);
+    --padding-height: calc(var(--interface-spacing) * .3);
     --padding-width: calc(var(--padding-height) * 2);
     --padding: var(--padding-height) var(--padding-width);
     --menu-elem-margin: calc(var(--padding-height) * 1.2);

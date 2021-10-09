@@ -4,9 +4,12 @@ class FieldResize extends FieldBase {
         this.lastIsResize = false;
         this.lastIsTextAbsolute = null;
         this.defaultValuesSet = false;
-        this.default4x4FieldWidth = fieldSize(4,
-            parseInt(getRootCssVar('default-size')),
-            parseInt(getRootCssVar('default-spacing'))
+    }
+
+    fieldWidth(n) {
+        return fieldSize(n,
+            parseInt(getRootCssVar('size')),
+            parseInt(getRootCssVar('spacing'))
         );
     }
 
@@ -19,6 +22,19 @@ class FieldResize extends FieldBase {
         }
     }
 
+    textResize(newFieldSize, direction) {
+        const isTextAbsolute = Math.min(window.innerWidth, window.innerHeight) >= 494;
+
+        if (isTextAbsolute != this.lastIsTextAbsolute) {
+            if (isTextAbsolute) {
+                setRootCssVar('interface-spacing', '13px');
+            } else {
+                setRootCssVar('interface-spacing', '2.6vmin');
+            }
+        }
+        this.lastIsTextAbsolute = isTextAbsolute;
+    }
+
     resize(newFieldSize, direction) {
         const ratio = newFieldSize / this.currentFieldSize(direction);
 
@@ -28,16 +44,6 @@ class FieldResize extends FieldBase {
             // maybe it's better not to round
             this[name] = _.round(this[name] * ratio, 1);
         }
-
-        const isTextAbsolute = newFieldSize >= this.default4x4FieldWidth;
-        if (isTextAbsolute != this.lastIsTextAbsolute) {
-            if (isTextAbsolute) {
-                setRootCssVar('default-spacing', '13px');
-            } else {
-                setRootCssVar('default-spacing', '2.6vw');
-            }
-        }
-        this.lastIsTextAbsolute = isTextAbsolute;
 
         this.alignBlocks();
     }
@@ -79,7 +85,10 @@ class FieldResize extends FieldBase {
             }
         }
 
+        this.textResize(newFieldSize, dir);
+
         const isResize = newFieldSize <= this.defaultFieldSizes[dir];
+
         if (isResize) {
             this.resize(newFieldSize, dir);
         }
