@@ -6,6 +6,10 @@
     align-items: center;
 }
 
+.menu-bar {
+    width: 100%;
+}
+
 .message .horizontal-menu {
     margin-top: calc(var(--spacing) * .5);
 }

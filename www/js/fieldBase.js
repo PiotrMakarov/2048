@@ -120,7 +120,7 @@ class FieldBase {
     makeContainer() {
         let container = createDivClass('container');
 
-        this.menu = createDivClass('horizontal-menu');
+        this.menu = createDivClass('horizontal-menu', 'menu-bar');
         let leftButtons = createDivClass('horizontal-menu');
         let rightButtons = createDivClass('horizontal-menu');
 
