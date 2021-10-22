@@ -1,7 +1,6 @@
 class FieldResize extends FieldBase {
     constructor(...args) {
         super(...args);
-        this.lastIsResize = false;
         this.lastIsTextAbsolute = null;
         this.defaultValuesSet = false;
     }
@@ -87,14 +86,11 @@ class FieldResize extends FieldBase {
 
         this.textResize(newFieldSize, dir);
 
-        const isResize = newFieldSize <= this.defaultFieldSizes[dir];
-
-        if (isResize) {
-            this.resize(newFieldSize, dir);
-        }
-        else if (this.lastIsResize) { // return to default size
-            this.resize(this.defaultFieldSizes[dir], dir);
-        }
-        this.lastIsResize = isResize;
+        const minDimension = Math.min(window.innerWidth, window.innerHeight);
+        this.resize(Math.min(
+            fieldSize(this.params[dir], minDimension * 0.202, minDimension * 0.026),
+            newFieldSize,
+            this.defaultFieldSizes[dir]),
+        dir);
     }
 }
