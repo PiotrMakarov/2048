@@ -118,6 +118,11 @@ input[type=number] {
 
 .message-container {
     min-width: calc(var(--interface-spacing) * 23);
+    white-space: nowrap;
+}
+
+.message-container.dialog {
+    min-width: calc(var(--interface-spacing) * 30);
 }
 
 

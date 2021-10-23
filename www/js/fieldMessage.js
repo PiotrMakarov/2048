@@ -20,10 +20,17 @@ class FieldMessage extends FieldOperate {
     hideMessage() {
         this.messageShownType = null;
         this.message.classList.add('hidden');
+
+        setTimeout(() => {
+            const container = document.querySelector('.message-container');
+            if (container !== null) {
+                container.classList = ['message-container'];
+            }
+        }, parseFloat(getRootCssVar('transition')) * 1000);
     }
 
     dialog(headerText, text, buttonsFuncs, kwargs, textSizeCoeff = 1) {
-        let container = createDivClass('message-container');
+        let container = createDivClass('message-container', 'dialog');
 
         let header = document.createElement('h1');
         header.innerText = headerText;
@@ -53,7 +60,7 @@ class FieldMessage extends FieldOperate {
     lose() {
         this.dialog('Game over!', '', {
             'New game': () => this.newGame({}, false),
-        }, {});
+        }, {}, 1.2);
     }
 
     win() {
