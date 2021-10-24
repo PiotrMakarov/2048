@@ -111,6 +111,10 @@ class FieldMessage extends FieldOperate {
         // Restrict the input of field size to be maximum 2 digits
         for (let el of settings.querySelectorAll('input')) {
             el.addEventListener('input', event => {
+                if (event.target.value == '0') {
+                    event.target.value = '';
+                }
+
                 if (event.target.value.length > 2) {
                     event.target.value = event.target.value.slice(0, 2);
                 }
