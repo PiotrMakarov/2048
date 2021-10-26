@@ -7,8 +7,8 @@ const defaultParams = {
 };
 
 const defaultAppearance = {
-    darkTheme: false,
-    colors: 'grey'
+    theme: 'light', // light | dark | classic
+    colors: 'grey' // maybe remove
 }
 
 const cookieExpireTime = 30; // days

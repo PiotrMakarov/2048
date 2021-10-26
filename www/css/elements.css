@@ -78,26 +78,6 @@ input[type=number] {
 }
 
 
-/* Theme switcher */
-
-.theme-switcher {
-    display: none;
-}
-
-.theme-switcher + label[for="theme-switcher"] {
-    margin: 0 calc(var(--interface-spacing) * .8);
-    cursor: pointer;
-}
-
-.theme-switcher + label[for="theme-switcher"]::before {
-    content: "Light";
-}
-
-.theme-switcher:checked + label[for="theme-switcher"]::before {
-    content: "Dark";
-}
-
-
 /* Message */
 
 .message {

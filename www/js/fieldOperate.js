@@ -18,13 +18,48 @@ class FieldOperate extends FieldResize {
         return percents;
     }
 
-    textToColor(text) {
+    textToColorGrey(text) {
         let n = Number(text);
         let pow = Math.log2(n);
         let shade = this.powToShade(pow);
         return {
             bg: `hsl(0, 0%, ${shade}%)`,
             fg: shade < 50 ? 'var(--light)' : 'var(--dark)',
+        };
+    }
+
+    textToColorClassic(text) {
+        const powerToColor = [
+            '#eee5da', // 2
+            '#eee1ce', // 4
+            '#f4b27e', // 8
+            '#f6976b', // 16
+            '#f77e69', // 32
+            '#f76148', // 64
+            '#edce71', // 128
+            '#eeca62', // 256
+            '#edc650', // 512
+            '#ebc43f', // 1024
+            '#ebc43f', // 2048
+            '#ef676b', // 4096
+            '#ed4d59', // 8192
+            '#f33f3e', // 16384
+            '#72b4d6', // 32768
+            '#5ba0de', // 65536
+            '#1981ce', // 131072
+        ];
+
+        let power = Math.log2(+text);
+        if (power > powerToColor.length) {
+            power = powerToColor.length;
+        }
+
+        const fgLight = '#f9f6f2';
+        const fgDark  = '#776e65';
+
+        return {
+            bg: powerToColor[power-1],
+            fg: power < 3 ? fgDark : fgLight,
         };
     }
 
@@ -51,7 +86,6 @@ class FieldOperate extends FieldResize {
             block.classList.add(anim);
             setTimeout(() => block.remove(), this.timeout);
         } else block.remove();
-
     }
 
     get(x, y) {
@@ -85,11 +119,23 @@ class FieldOperate extends FieldResize {
     }
 
     setBlockText(block, text) {
-        let {bg, fg} = this.textToColor(text);
+        let {bg, fg} =
+            this.appearance.theme == 'light' ? this.textToColorGrey(text)
+            : this.appearance.theme == 'dark' ? this.textToColorGrey(text)
+            : this.appearance.theme == 'classic' ? this.textToColorClassic(text)
+            : {bg: 'black', fg: 'black'};
+
         block.innerText = text;
         block.style.background = bg;
         block.style.color = fg;
+    }
 
+    updateBlockTheme() {
+        for (let column of this.blocks) {
+            for (let block of column) {
+                if (block) this.setBlockText(block, block.innerText);
+            }
+        }
     }
 
     getCoordText(x, y) {

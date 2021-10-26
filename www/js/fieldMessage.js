@@ -79,7 +79,7 @@ class FieldMessage extends FieldOperate {
     }
 
     setMenuBarTheme() {
-        if (this.appearance.darkTheme) {
+        if (this.appearance.theme == 'dark') {
             StatusBar.styleBlackOpaque();
         } else {
             StatusBar.styleDefault();
@@ -108,13 +108,15 @@ class FieldMessage extends FieldOperate {
 </div>
 `;
 
-        // Restrict the input of field size to be maximum 2 digits
+        // Rules for blocking input on field size
         for (let el of settings.querySelectorAll('input')) {
             el.addEventListener('input', event => {
+                // Forbid zero as first digit
                 if (event.target.value == '0') {
                     event.target.value = '';
                 }
 
+                // Restrict the input of field size to be maximum 2 digits
                 if (event.target.value.length > 2) {
                     event.target.value = event.target.value.slice(0, 2);
                 }
@@ -140,23 +142,29 @@ class FieldMessage extends FieldOperate {
             settings.append(newElem);
         }
 
-        let darkTheme = createDivClass('horizontal-menu');
-        darkTheme.innerHTML =
+        let theme = createDivClass('horizontal-menu');
+        theme.innerHTML =
 `
 <div>Theme</div>
-<input type="checkbox" class="theme-switcher" id="theme-switcher" name="darkTheme">
-<label for="theme-switcher"></label>
+<div id="theme" style="
+    margin: 0 calc(var(--interface-spacing) * .8);
+    cursor: pointer;
+"></div>
 `;
-        settings.append(darkTheme);
-        settings.darkTheme.checked = this.appearance.darkTheme;
-        settings.darkTheme.addEventListener('click', () => {
-            this.appearance.darkTheme = settings.darkTheme.checked;
+        settings.append(theme);
+        const themeButton = theme.querySelector('#theme');
+        themeButton.innerText = _.capitalize(this.appearance.theme);
+
+        let themeIndex = consts.themes.indexOf(this.appearance.theme);
+        themeButton.addEventListener('click', () => {
+            themeIndex++;
+            this.appearance.theme = consts.themes[themeIndex % consts.themes.length];
+            themeButton.innerText = _.capitalize(this.appearance.theme);
+            this.updateBlockTheme();
             setJSONItem('appearance', this.appearance);
-            if (this.appearance.darkTheme) {
-                document.body.classList.add('dark');
-            } else {
-                document.body.classList.remove('dark');
-            }
+
+            document.body.classList.remove(...consts.themes);
+            document.body.classList.add(this.appearance.theme);
             this.setMenuBarTheme();
         });
 

@@ -1,8 +1,7 @@
 'use strict';
 
 let appearance = getJSONItem('appearance') || {};
-if (appearance.darkTheme)
-    document.body.classList.add('dark');
+document.body.classList.add(appearance.theme); // light | dark | classic
 
 let settings = getJSONItem('settings') || {};
 
