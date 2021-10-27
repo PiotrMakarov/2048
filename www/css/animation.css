@@ -64,10 +64,6 @@
     }
 }
 
-.block {
-    transition: var(--transition-move);
-}
-
 .field:not(.bg) .block {
     position: absolute;
     animation: var(--transition) var(--timing-function) 0s 1 block-appear-animation;

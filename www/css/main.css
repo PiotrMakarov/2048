@@ -6,7 +6,7 @@
 
     --size: 100px;
     --spacing: 13px;
-    --radius: calc(var(--spacing) * .3);
+    --radius: calc(var(--spacing) * .35);
     --default-radius: calc(var(--interface-spacing) * .3);
     --field-font-size: calc(var(--spacing) * 2.7);
     --font-size: calc(var(--interface-spacing) * 2);

@@ -131,4 +131,8 @@ input[type=number] {
     height: var(--size);
     border-radius: var(--radius);
     user-select: none;
+
+    transition: all var(--transition-move),
+        background var(--transition),
+        color var(--transition);
 }
