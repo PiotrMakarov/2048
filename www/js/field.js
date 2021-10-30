@@ -140,7 +140,7 @@ class Field extends FieldMessage {
         this.new = [];
 
         if (changed) {
-            this.backAvailable = true;
+            this.undoAvailable = true;
             this.addRandomBlock(true);
             if (!this.check()) {
                 this.lost = true;
@@ -164,8 +164,8 @@ class Field extends FieldMessage {
         setTimeout(() => this.move(blockToMove, ...b));
     }
 
-    back() {
-        if (!this.backAvailable)
+    undo() {
+        if (!this.undoAvailable)
             return;
 
         this.lost = false;
@@ -173,7 +173,7 @@ class Field extends FieldMessage {
         if (this.messageShownType == 'win')
             this.won = false;
         this.hideMessage();
-        this.backPressed++;
+        this.undone++;
 
         this.lastStep.reverse();
         for (let action of this.lastStep) {
@@ -185,6 +185,6 @@ class Field extends FieldMessage {
         }
 
         this.saveBlocks();
-        this.backAvailable = false;
+        this.undoAvailable = false;
     }
 }

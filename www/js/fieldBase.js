@@ -10,7 +10,7 @@ class FieldBase {
         const loadFunction = parseFloat;
         const dumpFunction = x => x + 'px';
 
-        for (let name of ['backPressed', 'won', 'lost']) {
+        for (let name of ['undone', 'won', 'lost']) {
             this.bindJSONItem(name);
         }
         this.bindCssVar('size', loadFunction, dumpFunction);
@@ -20,18 +20,18 @@ class FieldBase {
         this.messageTimeout = 1000;
     }
 
-    set backAvailable(value) {
+    set undoAvailable(value) {
         if (value) {
-            this.backButton.classList.remove('disabled');
+            this.undoButton.classList.remove('disabled');
         } else {
-            this.backButton.classList.add('disabled');
+            this.undoButton.classList.add('disabled');
         }
 
-        setJSONItem('backAvailable', value)
+        setJSONItem('undoAvailable', value)
     }
 
-    get backAvailable() {
-        return !this.backButton.classList.contains('disabled');
+    get undoAvailable() {
+        return !this.undoButton.classList.contains('disabled');
     }
 
     setParams(params, appearance) {
@@ -130,15 +130,15 @@ class FieldBase {
         });
         newGameButton.innerText = 'New game';
 
-        this.backButton = createDivClass('button');
-        this.backButton.innerText = 'Back';
-        this.backButton.addEventListener('click', () => this.back());
+        this.undoButton = createDivClass('button');
+        this.undoButton.innerText = 'Undo';
+        this.undoButton.addEventListener('click', () => this.undo());
 
         let settingsButton = createDivClass('button');
         settingsButton.innerText = 'Settings';
         settingsButton.addEventListener('click', () => this.settings());
 
-        leftButtons.append(newGameButton, this.backButton);
+        leftButtons.append(newGameButton, this.undoButton);
 
         rightButtons.append(settingsButton);
 
@@ -185,8 +185,8 @@ class FieldBase {
         if (!this.elem) { // first game
             this.elem = newElem;
             this.lastStep = getJSONItem('lastStep') || [];
-            this.backPressed = getJSONItem('backPressed') || 0;
-            this.backAvailable = getJSONItem('backAvailable') || false;
+            this.undone = getJSONItem('undone') || 0;
+            this.undoAvailable = getJSONItem('undoAvailable') || false;
             this.won = getJSONItem('won') || false;
             this.lost = getJSONItem('lost') || false;
             if (this.lost) this.lose();
@@ -198,7 +198,7 @@ class FieldBase {
             this.elem = newElem;
             this.lastStep = [];
             setJSONItem('lastStep', []);
-            this.backPressed = 0;
+            this.undone = 0;
             this.won = false;
             this.lost = false;
             this.makeBlocks();
@@ -208,7 +208,7 @@ class FieldBase {
         this.hideMessage();
 
         if (this.lastStep.length == 0)
-            this.backAvailable = false;
+            this.undoAvailable = false;
 
         setTimeout(() => {
             this.adjustWindowSize();
