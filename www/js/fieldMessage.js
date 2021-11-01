@@ -110,17 +110,18 @@ class FieldMessage extends FieldOperate {
 `;
 
         // Rules for blocking input on field size
-        for (let el of settings.querySelectorAll('input')) {
+        const lastValues = [this.params.width, this.params.height].map(String);
+        for (let [i, el] of settings.querySelectorAll('input').entries()) {
             el.addEventListener('input', event => {
-                // Forbid zero as first digit
-                if (event.target.value == '0') {
-                    event.target.value = '';
+                console.log(event.data);
+                if (event.data == null) {}
+                else if (
+                    (event.target.value == '' && !/^[1-9]$/.test(event.data))
+                    || event.target.value.length > 2 || !/^\d$/.test(event.data)
+                ) {
+                    event.target.value = lastValues[i];
                 }
-
-                // Restrict the input of field size to be maximum 2 digits
-                if (event.target.value.length > 2) {
-                    event.target.value = event.target.value.slice(0, 2);
-                }
+                lastValues[i] = event.target.value;
             })
         }
 
