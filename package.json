@@ -13,7 +13,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "devDependencies": {
-    "cordova-android": "^9.0.0",
+    "cordova-android": "^10.0.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-screen-orientation": "^3.0.2",
     "cordova-plugin-statusbar": "^2.4.3",
@@ -27,9 +27,8 @@
       "cordova-plugin-screen-orientation": {}
     },
     "platforms": [
-      "android",
-      "browser"
+      "browser",
+      "android"
     ]
-  },
-  "dependencies": {}
+  }
 }
