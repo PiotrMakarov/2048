@@ -71,7 +71,7 @@ class FieldMessage extends FieldOperate {
 
         let undoMessage = `You've undone ${countStr} ${moves}`;
 
-        this.dialog('You win!', undoMessage, {
+        this.dialog('You won!', undoMessage, {
             'New game': () => this.newGame({}),
             'Continue': () => {},
         }, {type: 'win'});
