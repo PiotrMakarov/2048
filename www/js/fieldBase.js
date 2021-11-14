@@ -20,20 +20,6 @@ class FieldBase {
         this.messageTimeout = 1000;
     }
 
-    set undoAvailable(value) {
-        if (value) {
-            this.undoButton.classList.remove('disabled');
-        } else {
-            this.undoButton.classList.add('disabled');
-        }
-
-        setJSONItem('undoAvailable', value)
-    }
-
-    get undoAvailable() {
-        return !this.undoButton.classList.contains('disabled');
-    }
-
     setParams(params, appearance) {
         this.params = applyCustomParams(
             defaultParams,
@@ -184,9 +170,8 @@ class FieldBase {
 
         if (!this.elem) { // first game
             this.elem = newElem;
-            this.lastStep = getJSONItem('lastStep') || [];
+            this.lastSteps = getJSONItem('lastSteps') || [];
             this.undone = getJSONItem('undone') || 0;
-            this.undoAvailable = getJSONItem('undoAvailable') || false;
             this.won = getJSONItem('won') || false;
             this.lost = getJSONItem('lost') || false;
             if (this.lost) this.lose();
@@ -196,8 +181,8 @@ class FieldBase {
         } else {
             this.elem.replaceWith(newElem);
             this.elem = newElem;
-            this.lastStep = [];
-            setJSONItem('lastStep', []);
+            this.lastSteps = [];
+            setJSONItem('lastSteps', []);
             this.undone = 0;
             this.won = false;
             this.lost = false;
@@ -205,10 +190,13 @@ class FieldBase {
             this.addRandomBlocks();
         }
 
-        this.hideMessage();
+        if (this.lastSteps.length == 0) {
+            this.undoButton.classList.add('disabled');
+        } else {
+            this.undoButton.classList.remove('disabled');
+        }
 
-        if (this.lastStep.length == 0)
-            this.undoAvailable = false;
+        this.hideMessage();
 
         setTimeout(() => {
             this.adjustWindowSize();

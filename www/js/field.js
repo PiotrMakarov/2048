@@ -140,14 +140,14 @@ class Field extends FieldMessage {
         this.new = [];
 
         if (changed) {
-            this.undoAvailable = true;
             this.addRandomBlock(true);
             if (!this.check()) {
                 this.lost = true;
                 this.lose();
             }
-            this.lastStep = this.newStep;
-            setJSONItem('lastStep', this.lastStep);
+            this.lastSteps.push(this.newStep);
+            this.undoButton.classList.remove('disabled');
+            setJSONItem('lastSteps', this.lastSteps);
         }
 
         this.saveBlocks();
@@ -165,7 +165,7 @@ class Field extends FieldMessage {
     }
 
     undo() {
-        if (!this.undoAvailable)
+        if (this.lastSteps.length == 0)
             return;
 
         this.lost = false;
@@ -175,9 +175,16 @@ class Field extends FieldMessage {
         this.hideMessage();
         this.undone++;
 
-        this.lastStep.reverse();
-        for (let action of this.lastStep) {
-            if (action.type == 'add') this.delete(this.get(...action.coord), true, 'delete');
+        const lastStep = this.lastSteps.pop();
+        setJSONItem('lastSteps', this.lastSteps);
+
+        if (this.lastSteps.length == 0)
+            this.undoButton.classList.add('disabled');
+
+        lastStep.reverse();
+        for (let action of lastStep) {
+            if (action.type == 'add')
+                this.delete(this.get(...action.coord), true, 'delete');
             else if (action.type == 'move')
                 this.move(this.get(...action.new), ...action.old);
             else if (action.type == 'merge')
@@ -185,6 +192,5 @@ class Field extends FieldMessage {
         }
 
         this.saveBlocks();
-        this.undoAvailable = false;
     }
 }
