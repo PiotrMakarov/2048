@@ -78,9 +78,9 @@ function setJSONItem(name, value) {
 }
 
 function getRootCssVar(name) {
-    return getComputedStyle(document.documentElement).getPropertyValue('--' + name);
+    return getComputedStyle(document.body).getPropertyValue('--' + name);
 }
 
 function setRootCssVar(name, value) {
-    document.documentElement.style.setProperty('--' + name, value);
+    document.body.style.setProperty('--' + name, value);
 }

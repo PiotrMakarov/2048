@@ -1,4 +1,4 @@
-:root {
+body {
     --interface-spacing: 13px;
 
     --default-size: 100px;
@@ -7,7 +7,7 @@
     --size: 100px;
     --spacing: 13px;
     --radius: calc(var(--spacing) * .35);
-    --default-radius: calc(var(--interface-spacing) * .3);
+    --default-radius: calc(var(--interface-spacing) * .35);
     --field-font-size: calc(var(--spacing) * 2.7);
     --font-size: calc(var(--interface-spacing) * 2);
 
@@ -109,7 +109,7 @@ body {
 .field-container > * {
     position: absolute;
     padding: var(--spacing);
-    border-radius: var(--radius);
+    border-radius: calc(var(--radius) * 1.5);
     width: var(--container-width);
     height: var(--container-height);
 }
