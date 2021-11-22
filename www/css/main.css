@@ -51,7 +51,7 @@ body {
     /* Fix flickering effect on animation in Firefox */
     /* Impairs performance on big fields on android */
 
-   -webkit-backface-visibility: hidden;
+/*   -webkit-backface-visibility: hidden;
    -moz-backface-visibility: hidden;
 
    backface-visibility: hidden;
@@ -59,7 +59,7 @@ body {
    -webkit-perspective: 1000;
    -moz-perspective: 1000;
    perspective: 1000;
-
+*/
    /* Other transform properties here */
 }
 

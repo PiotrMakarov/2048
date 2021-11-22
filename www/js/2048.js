@@ -11,9 +11,11 @@ document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
     window.screen.orientation.lock('portrait');
 
+    StatusBar.hide();
+    StatusBar.show();
+    StatusBar.overlaysWebView(false);
     StatusBar.overlaysWebView(true);
-    // StatusBar.styleDefault();
-    field.setMenuBarTheme();
+    field.setBarTheme();
 }
 
 let lastCoord = null;
