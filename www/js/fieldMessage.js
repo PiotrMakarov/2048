@@ -66,10 +66,11 @@ class FieldMessage extends FieldOperate {
     win() {
         if (this.won) return;
 
-        let countStr = this.undone ? this.undone : 'no';
-        let moves = this.undone == 1 ? 'move' : 'moves';
-
-        let undoMessage = `You've undone ${countStr} ${moves}`;
+        if (this.undone > 0) {
+            let undoMessage = `You've undone ${this.undone} ${moves}`;
+        } else {
+            let undoMessage = `You haven't undone any moves`;
+        }
 
         this.dialog('You won!', undoMessage, {
             'New game': () => this.newGame({}),
