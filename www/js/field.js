@@ -148,9 +148,8 @@ class Field extends FieldMessage {
             this.lastSteps.push(this.newStep);
             this.undoButton.classList.remove('disabled');
             setJSONItem('lastSteps', this.lastSteps);
+            this.saveBlocks();
         }
-
-        this.saveBlocks();
     }
 
     unmerge(a, b) {
@@ -191,6 +190,6 @@ class Field extends FieldMessage {
                 this.unmerge(action.new, action.old);
         }
 
-        this.saveBlocks();
+        setTimeout(() => this.saveBlocks());
     }
 }
