@@ -147,6 +147,33 @@ class FieldBase {
         this.blocks = empty2DArray(this.params.width, this.params.height, null);
     }
 
+    setBarTheme() {
+        let bgColor;
+        let dark;
+        if (this.appearance.theme == 'light') {
+            bgColor = '#FFFFFF';
+            dark = true;
+        } else if (this.appearance.theme == 'dark') {
+            bgColor = '#121212';
+            dark = false;
+        } else if (this.appearance.theme == 'classic') {
+            bgColor = '#FAF8EF';
+            dark = true;
+        }
+
+        if (dark) {
+            StatusBar.styleDefault();
+            // TransparentNavigationBar.setNavigationBarButtonsColor('dark');
+        } else {
+            StatusBar.styleLightContent();
+            // TransparentNavigationBar.setNavigationBarButtonsColor('light');
+        }
+
+        NavigationBar.backgroundColorByHexString(bgColor, dark);
+        StatusBar.backgroundColorByHexString(bgColor);
+        window.plugins.headerColor.tint(bgColor);
+    }
+
     newGame(args, dialog = true) {
         if (dialog) {
             this.dialog('Start new game?', false, {

@@ -80,33 +80,6 @@ class FieldMessage extends FieldOperate {
         this.won = true;
     }
 
-    setBarTheme() {
-        if (this.appearance.theme == 'dark') {
-            StatusBar.styleLightContent();
-            const light = false;
-            // TransparentNavigationBar.setNavigationBarButtonsColor('light');
-        } else {
-            StatusBar.styleDefault();
-            const light = true;
-            // TransparentNavigationBar.setNavigationBarButtonsColor('dark');
-        }
-
-        let bgColor;
-        let dark;
-        if (this.appearance.theme == 'light') {
-            bgColor = '#FFFFFF';
-            dark = true;
-        } else if (this.appearance.theme == 'dark') {
-            bgColor = '#121212';
-            dark = false;
-        } else if (this.appearance.theme == 'classic') {
-            bgColor = '#FAF8EF';
-            dark = true;
-        }
-        NavigationBar.backgroundColorByHexString(bgColor, dark);
-        window.plugins.headerColor.tint(bgColor);
-    }
-
     settings() {
         if (this.messageShownType == 'settings') {
             this.hideMessage();
