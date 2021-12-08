@@ -145,7 +145,8 @@ class Field extends FieldMessage {
                 this.lost = true;
                 this.lose();
             }
-            this.lastSteps.push(this.newStep);
+            // this.lastSteps.push(this.newStep);
+            this.lastSteps = [this.newStep];
             this.undoButton.classList.remove('disabled');
             setJSONItem('lastSteps', this.lastSteps);
             this.saveBlocks();

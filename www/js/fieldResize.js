@@ -87,9 +87,10 @@ class FieldResize extends FieldBase {
         this.textResize(newFieldSize, dir);
 
         const minDimension = Math.min(window.innerWidth, window.innerHeight);
+        const badgesHeight = dir == 'height' && platform == 'web' ? 96 : 0;
         this.resize(Math.min(
-            fieldSize(this.params[dir], minDimension * 0.202, minDimension * 0.026),
-            newFieldSize,
+            fieldSize(this.params[dir], minDimension * 0.202, minDimension * 0.026) - badgesHeight,
+            newFieldSize - badgesHeight,
             this.defaultFieldSizes[dir]),
         dir);
     }

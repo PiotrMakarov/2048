@@ -46,4 +46,6 @@ document.body.addEventListener('keydown', function (event) {
 
 window.addEventListener('resize', () => field.adjustWindowSize());
 
-document.fonts.ready.then(() => document.body.append(field.elem));
+document.fonts.ready.then(() => {
+    document.body.append(field.elem);
+});

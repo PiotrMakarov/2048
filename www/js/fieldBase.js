@@ -133,6 +133,23 @@ class FieldBase {
         let fieldContainer = this.makeFieldContainer();
         container.append(this.menu, fieldContainer);
 
+        if (platform == 'web') {
+            const badges = createDivClass('badges');
+            badges.style.width = this.currentFieldSize('width') + 'px';
+
+            badges.innerHTML = `
+<a
+    id="google-play"
+    target="_blank"
+    href='https://play.google.com/store/apps/details\
+?id=me.petrmakarov.game2048&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'
+>
+    <img alt='Get it on Google Play' height="50"
+        src='https://ru.enervent.com/wp-content/uploads//2018/11/google-play-badge-logo-png-transparent.png'/>
+</a>`;
+            container.append(badges);
+        }
+
         return container;
     }
 
