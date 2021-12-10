@@ -66,7 +66,8 @@ class FieldMessage extends FieldOperate {
     win() {
         if (this.won) return;
 
-        let undoMessage = this.undone > 0
+        const moves = this.undone == 1 ? 'move' : 'moves';
+        const undoMessage = this.undone > 0
             ? `You've undone ${this.undone} ${moves}`
             : `You haven't undone any moves`;
 

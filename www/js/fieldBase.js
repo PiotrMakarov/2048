@@ -134,10 +134,9 @@ class FieldBase {
         container.append(this.menu, fieldContainer);
 
         if (platform == 'web') {
-            const badges = createDivClass('badges');
-            badges.style.width = this.currentFieldSize('width') + 'px';
+            this.badges = createDivClass('badges');
 
-            badges.innerHTML = `
+            this.badges.innerHTML = `
 <a
     id="google-play"
     target="_blank"
@@ -147,7 +146,7 @@ class FieldBase {
     <img alt='Get it on Google Play' height="50"
         src='https://ru.enervent.com/wp-content/uploads//2018/11/google-play-badge-logo-png-transparent.png'/>
 </a>`;
-            container.append(badges);
+            container.append(this.badges);
         }
 
         return container;

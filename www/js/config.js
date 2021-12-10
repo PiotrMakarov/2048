@@ -13,4 +13,4 @@ const defaultAppearance = {
 
 const cookieExpireTime = 30; // days
 
-const platform = 'web'; // phone | web
+const platform = 'phone'; // phone | web

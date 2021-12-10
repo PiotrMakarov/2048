@@ -22,13 +22,17 @@ class FieldResize extends FieldBase {
     }
 
     textResize(newFieldSize, direction) {
-        const isTextAbsolute = Math.min(window.innerWidth, window.innerHeight) >= 494;
+        const badges = direction == 'height' && platform == 'web';
+        const badgesHeight = badges ? 96 : 0;
+        const isTextAbsolute = Math.min(window.innerWidth, window.innerHeight)
+            >= 494 + badgesHeight;
 
         if (isTextAbsolute != this.lastIsTextAbsolute) {
             if (isTextAbsolute) {
                 setRootCssVar('interface-spacing', '13px');
             } else {
-                setRootCssVar('interface-spacing', '2.6vmin');
+                const rel = badges ? '2.2vmin' : '2.6vmin';
+                setRootCssVar('interface-spacing', rel);
             }
         }
         this.lastIsTextAbsolute = isTextAbsolute;
@@ -93,5 +97,7 @@ class FieldResize extends FieldBase {
             newFieldSize - badgesHeight,
             this.defaultFieldSizes[dir]),
         dir);
+        if (platform == 'web')
+            this.badges.style.width = this.currentFieldSize('width') + 'px';
     }
 }
