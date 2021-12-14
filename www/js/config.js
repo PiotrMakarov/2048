@@ -6,11 +6,11 @@ const defaultParams = {
     winPower: 11
 };
 
+const themes = ['classic', 'light', 'dark'];
 const defaultAppearance = {
-    theme: 'light', // light | dark | classic
-    colors: 'grey' // maybe remove
+    theme: themes[0],
 }
 
 const cookieExpireTime = 30; // days
 
-const platform = 'phone'; // phone | web
+const platform = 'web'; // phone | web

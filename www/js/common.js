@@ -1,9 +1,5 @@
 'use strict';
 
-const consts = {
-    themes: ['light', 'dark', 'classic'],
-};
-
 let directionToDelta = {
     up:    [0, -1],
     down:  [0,  1],

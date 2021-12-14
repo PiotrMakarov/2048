@@ -149,15 +149,15 @@ class FieldMessage extends FieldOperate {
         const themeButton = theme.querySelector('#theme');
         themeButton.innerText = _.capitalize(this.appearance.theme);
 
-        let themeIndex = consts.themes.indexOf(this.appearance.theme);
+        let themeIndex = themes.indexOf(this.appearance.theme);
         themeButton.addEventListener('click', () => {
             themeIndex++;
-            this.appearance.theme = consts.themes[themeIndex % consts.themes.length];
+            this.appearance.theme = themes[themeIndex % themes.length];
             themeButton.innerText = _.capitalize(this.appearance.theme);
             this.updateBlockTheme();
             setJSONItem('appearance', this.appearance);
 
-            document.body.classList.remove(...consts.themes);
+            document.body.classList.remove(...themes);
             document.body.classList.add(this.appearance.theme);
             this.setBarTheme();
         });

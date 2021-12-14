@@ -1,6 +1,9 @@
 'use strict';
 
-let appearance = getJSONItem('appearance') || {};
+let appearance = Object.assign(
+    defaultAppearance,
+    (getJSONItem('appearance') || {}),
+);
 document.body.classList.add(appearance.theme); // light | dark | classic
 
 let settings = getJSONItem('settings') || {};
